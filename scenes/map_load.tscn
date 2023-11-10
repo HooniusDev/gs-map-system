@@ -105,7 +105,7 @@ position = Vector2(159, 139)
 shape = SubResource("RectangleShape2D_f4ju7")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(256, 107)
+position = Vector2(254, 107)
 offset = Vector2(64, 32)
 drag_left_margin = 0.6
 drag_top_margin = 0.6
@@ -172,6 +172,7 @@ theme = ExtResource("7_713qh")
 theme_override_styles/panel = ExtResource("14_utgw5")
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/LordHaywire"]
+layout_mode = 0
 offset_left = 4.0
 offset_top = 4.0
 offset_right = 44.0
@@ -250,6 +251,7 @@ theme = ExtResource("7_713qh")
 theme_override_styles/panel = ExtResource("14_utgw5")
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/NewJoker6"]
+layout_mode = 0
 offset_left = 4.0
 offset_top = 4.0
 offset_right = 44.0
@@ -328,6 +330,7 @@ theme = ExtResource("7_713qh")
 theme_override_styles/panel = ExtResource("14_utgw5")
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/KingFlatus"]
+layout_mode = 0
 offset_left = 4.0
 offset_top = 4.0
 offset_right = 42.0
