@@ -1,9 +1,10 @@
-res://scenes/map_load.tscn
+res://scripts/map/spilt_color_id.gd
+res://scenes/split_color_id_test.tscn
 res://scenes/Map.gd
 res://assets/shaders/outline_2.gdshader
 res://scenes/Maps/dotc_map_data.tres
 res://addons/generic_pixel_ui/stylebox/panels/panel_square_dark.stylebox
 res://assets/shaders/outline.gdshader
 res://assets/shaders/selected_outline.gdshader
+res://scenes/map_load.tscn
 res://scenes/territory.tscn
-res://scenes/Maps/Tiny64.tscn
