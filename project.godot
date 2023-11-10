@@ -1,0 +1,32 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="gs-map-system"
+run/main_scene="res://scenes/map_load.tscn"
+config/features=PackedStringArray("4.2", "Forward Plus")
+config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=636
+window/size/viewport_height=277
+window/size/resizable=false
+window/size/always_on_top=true
+window/size/window_width_override=1272
+window/size/window_height_override=554
+window/stretch/aspect="ignore"
+window/stretch/scale=2.0
+window/stretch/scale_mode="integer"
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0

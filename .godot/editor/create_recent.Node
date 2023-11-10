@@ -1,0 +1,14 @@
+Label
+Panel
+TextureRect
+Node2D
+MapEditor
+AcceptDialog
+ConfirmationDialog
+Node
+HSeparator
+MarginContainer
+VBoxContainer
+PanelContainer
+CanvasLayer
+StaticBody2D

@@ -1,0 +1,8 @@
+[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://3anxtlr0yvjo"]
+
+[ext_resource type="FontFile" uid="uid://dpcbnfrxixohr" path="res://addons/generic_pixel_ui/fonts/TinyPixie2.ttf" id="1_ryj7s"]
+
+[resource]
+base_font = ExtResource("1_ryj7s")
+spacing_space = -1
+spacing_bottom = -1

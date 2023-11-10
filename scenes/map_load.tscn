@@ -1,0 +1,398 @@
+[gd_scene load_steps=22 format=3 uid="uid://dh0vors64jwru"]
+
+[ext_resource type="Script" path="res://scripts/map/main.gd" id="1_w8c5l"]
+[ext_resource type="Script" path="res://scripts/map/map_manager.gd" id="2_fpop4"]
+[ext_resource type="Texture2D" uid="uid://bwdg6mioe0h2r" path="res://assets/map_sprites/dotc/dotc_map.png" id="3_di6eq"]
+[ext_resource type="Resource" uid="uid://brc76htm5qyvh" path="res://scenes/Maps/dotc_map_data.tres" id="3_fhdkp"]
+[ext_resource type="Texture2D" uid="uid://dlhhdwoikjg4o" path="res://assets/map_sprites/dotc/dotc_color_id.png" id="4_uhv35"]
+[ext_resource type="Script" path="res://scenes/select_starting_location.gd" id="6_rqxuc"]
+[ext_resource type="Script" path="res://scenes/Map.gd" id="6_vbuk1"]
+[ext_resource type="Theme" uid="uid://brunryg3jh5er" path="res://addons/generic_pixel_ui/generic_pixel_ui.theme" id="7_713qh"]
+[ext_resource type="Texture2D" uid="uid://c76qadg0sdn01" path="res://assets/map_sprites/dotc/dotc_borders.png" id="7_ndbv5"]
+[ext_resource type="Script" path="res://scenes/factions.gd" id="7_nw8fa"]
+[ext_resource type="Script" path="res://scenes/selected_territory_info.gd" id="8_f6dvy"]
+[ext_resource type="Script" path="res://scripts/faction_data.gd" id="8_qc71d"]
+[ext_resource type="Texture2D" uid="uid://b07yu6yr5i082" path="res://assets/map_sprites/dotc/dotc_features.png" id="8_y0od3"]
+[ext_resource type="StyleBox" uid="uid://b5l4l60rw8y8q" path="res://addons/generic_pixel_ui/stylebox/panels/panel_rounded_light.stylebox" id="14_utgw5"]
+[ext_resource type="Texture2D" uid="uid://catjw5qmj4q38" path="res://assets/sprites/portrait_0.png" id="15_pkj5h"]
+[ext_resource type="Texture2D" uid="uid://ddx3st2kwi6ir" path="res://assets/sprites/portrait_1.png" id="16_ka5bb"]
+[ext_resource type="Texture2D" uid="uid://dg1qdv4d2l4qi" path="res://assets/sprites/portrait_2.png" id="17_c1g5a"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f4ju7"]
+size = Vector2(314, 278)
+
+[sub_resource type="Resource" id="Resource_d4wp7"]
+script = ExtResource("8_qc71d")
+name = "Lord Haywire"
+id = 0
+is_player = true
+primary_color = Color(0.713726, 0, 0, 1)
+secondary_color = Color(0.905882, 0.592157, 0.313726, 1)
+
+[sub_resource type="Resource" id="Resource_8p8r7"]
+script = ExtResource("8_qc71d")
+name = "Sideways"
+id = 1
+is_player = false
+primary_color = Color(0, 0.545098, 0, 1)
+secondary_color = Color(0.807843, 0.54902, 0.501961, 1)
+
+[sub_resource type="Resource" id="Resource_hp2g5"]
+script = ExtResource("8_qc71d")
+name = "OddMen"
+id = 2
+is_player = false
+primary_color = Color(0, 0, 0.909804, 1)
+secondary_color = Color(0.67451, 0.454902, 0.615686, 1)
+
+[node name="Main" type="StaticBody2D"]
+input_pickable = true
+script = ExtResource("1_w8c5l")
+
+[node name="MapManager" type="Node2D" parent="."]
+script = ExtResource("2_fpop4")
+
+[node name="Map" type="Node2D" parent="MapManager"]
+script = ExtResource("6_vbuk1")
+map_data = ExtResource("3_fhdkp")
+
+[node name="Territories" type="Node2D" parent="MapManager/Map"]
+top_level = true
+
+[node name="Images" type="Node2D" parent="MapManager/Map"]
+
+[node name="ColorIds" type="Sprite2D" parent="MapManager/Map/Images"]
+visible = false
+texture = ExtResource("4_uhv35")
+centered = false
+metadata/color_id = true
+
+[node name="Map" type="Sprite2D" parent="MapManager/Map/Images"]
+texture = ExtResource("3_di6eq")
+centered = false
+
+[node name="Borders" type="Sprite2D" parent="MapManager/Map/Images"]
+self_modulate = Color(1, 1, 1, 0.443137)
+z_index = 10
+texture = ExtResource("7_ndbv5")
+centered = false
+
+[node name="Features" type="Sprite2D" parent="MapManager/Map/Images"]
+z_index = 15
+texture = ExtResource("8_y0od3")
+centered = false
+
+[node name="SelectStartingLocation" type="Node" parent="."]
+script = ExtResource("6_rqxuc")
+
+[node name="AcceptDialog" type="AcceptDialog" parent="SelectStartingLocation"]
+title = "Notice"
+initial_position = 1
+size = Vector2i(138, 80)
+theme = ExtResource("7_713qh")
+dialog_text = "Welcome!
+Please,
+Select your starting territory"
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="SelectStartingLocation"]
+theme = ExtResource("7_713qh")
+ok_button_text = "Yes"
+cancel_button_text = "No"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(159, 139)
+shape = SubResource("RectangleShape2D_f4ju7")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(256, 107)
+offset = Vector2(64, 32)
+drag_left_margin = 0.6
+drag_top_margin = 0.6
+drag_right_margin = 0.6
+drag_bottom_margin = 0.6
+
+[node name="Factions" type="Node2D" parent="."]
+script = ExtResource("7_nw8fa")
+factions = Array[ExtResource("8_qc71d")]([SubResource("Resource_d4wp7"), SubResource("Resource_8p8r7"), SubResource("Resource_hp2g5")])
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="SelectedTerritoryInfo" type="PanelContainer" parent="CanvasLayer"]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -293.0
+offset_top = -138.5
+offset_right = 2.0
+offset_bottom = 138.5
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 10
+size_flags_vertical = 3
+theme = ExtResource("7_713qh")
+script = ExtResource("8_f6dvy")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/SelectedTerritoryInfo"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/SelectedTerritoryInfo/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Name" type="Label" parent="CanvasLayer/SelectedTerritoryInfo/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Select Your Hero"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="CanvasLayer/SelectedTerritoryInfo/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Description" type="Label" parent="CanvasLayer/SelectedTerritoryInfo/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "This is a beautiful description of the territory"
+horizontal_alignment = 1
+
+[node name="LordHaywire" type="Panel" parent="CanvasLayer"]
+offset_left = 392.0
+offset_top = 39.0
+offset_right = 581.0
+offset_bottom = 108.0
+theme = ExtResource("7_713qh")
+theme_override_styles/panel = ExtResource("14_utgw5")
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/LordHaywire"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 44.0
+offset_bottom = 64.0
+texture = ExtResource("15_pkj5h")
+
+[node name="Name" type="Label" parent="CanvasLayer/LordHaywire"]
+layout_mode = 0
+offset_left = 69.0
+offset_top = 4.0
+offset_right = 157.0
+offset_bottom = 15.0
+theme_override_font_sizes/font_size = 12
+text = "Lord Haywire"
+
+[node name="LabelLeadership" type="Label" parent="CanvasLayer/LordHaywire"]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 25.0
+offset_right = 138.0
+offset_bottom = 36.0
+text = "Leadership"
+
+[node name="LabelJousting" type="Label" parent="CanvasLayer/LordHaywire"]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 38.0
+offset_right = 138.0
+offset_bottom = 49.0
+text = "Jousting"
+
+[node name="LabelSwordplay" type="Label" parent="CanvasLayer/LordHaywire"]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 138.0
+offset_bottom = 61.0
+text = "Swordplay
+"
+
+[node name="Leadership" type="Label" parent="CanvasLayer/LordHaywire"]
+layout_mode = 0
+offset_left = 92.0
+offset_top = 25.0
+offset_right = 180.0
+offset_bottom = 36.0
+text = "Average"
+horizontal_alignment = 2
+
+[node name="Jousting" type="Label" parent="CanvasLayer/LordHaywire"]
+layout_mode = 0
+offset_left = 92.0
+offset_top = 38.0
+offset_right = 180.0
+offset_bottom = 49.0
+text = "Good
+"
+horizontal_alignment = 2
+
+[node name="Swordplay" type="Label" parent="CanvasLayer/LordHaywire"]
+layout_mode = 0
+offset_left = 92.0
+offset_top = 50.0
+offset_right = 180.0
+offset_bottom = 61.0
+text = "Good
+"
+horizontal_alignment = 2
+
+[node name="NewJoker6" type="Panel" parent="CanvasLayer"]
+offset_left = 392.0
+offset_top = 114.0
+offset_right = 581.0
+offset_bottom = 183.0
+theme = ExtResource("7_713qh")
+theme_override_styles/panel = ExtResource("14_utgw5")
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/NewJoker6"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 44.0
+offset_bottom = 65.0
+texture = ExtResource("16_ka5bb")
+
+[node name="Name" type="Label" parent="CanvasLayer/NewJoker6"]
+layout_mode = 0
+offset_left = 69.0
+offset_top = 4.0
+offset_right = 157.0
+offset_bottom = 15.0
+theme_override_font_sizes/font_size = 12
+text = "New Joker6"
+
+[node name="LabelLeadership" type="Label" parent="CanvasLayer/NewJoker6"]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 25.0
+offset_right = 138.0
+offset_bottom = 36.0
+text = "Leadership"
+
+[node name="LabelJousting" type="Label" parent="CanvasLayer/NewJoker6"]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 38.0
+offset_right = 138.0
+offset_bottom = 49.0
+text = "Jousting"
+
+[node name="LabelSwordplay" type="Label" parent="CanvasLayer/NewJoker6"]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 138.0
+offset_bottom = 61.0
+text = "Swordplay
+"
+
+[node name="Leadership" type="Label" parent="CanvasLayer/NewJoker6"]
+layout_mode = 0
+offset_left = 92.0
+offset_top = 25.0
+offset_right = 180.0
+offset_bottom = 36.0
+text = "Good"
+horizontal_alignment = 2
+
+[node name="Jousting" type="Label" parent="CanvasLayer/NewJoker6"]
+layout_mode = 0
+offset_left = 92.0
+offset_top = 38.0
+offset_right = 180.0
+offset_bottom = 49.0
+text = "Weak
+"
+horizontal_alignment = 2
+
+[node name="Swordplay" type="Label" parent="CanvasLayer/NewJoker6"]
+layout_mode = 0
+offset_left = 92.0
+offset_top = 50.0
+offset_right = 180.0
+offset_bottom = 61.0
+text = "Strong
+"
+horizontal_alignment = 2
+
+[node name="KingFlatus" type="Panel" parent="CanvasLayer"]
+offset_left = 392.0
+offset_top = 192.0
+offset_right = 581.0
+offset_bottom = 261.0
+theme = ExtResource("7_713qh")
+theme_override_styles/panel = ExtResource("14_utgw5")
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/KingFlatus"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 42.0
+offset_bottom = 54.0
+texture = ExtResource("17_c1g5a")
+
+[node name="Name" type="Label" parent="CanvasLayer/KingFlatus"]
+layout_mode = 0
+offset_left = 69.0
+offset_top = 4.0
+offset_right = 157.0
+offset_bottom = 15.0
+theme_override_font_sizes/font_size = 12
+text = "King Flatus"
+
+[node name="LabelLeadership" type="Label" parent="CanvasLayer/KingFlatus"]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 25.0
+offset_right = 138.0
+offset_bottom = 36.0
+text = "Leadership"
+
+[node name="LabelJousting" type="Label" parent="CanvasLayer/KingFlatus"]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 38.0
+offset_right = 138.0
+offset_bottom = 49.0
+text = "Jousting"
+
+[node name="LabelSwordplay" type="Label" parent="CanvasLayer/KingFlatus"]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 138.0
+offset_bottom = 61.0
+text = "Swordplay
+"
+
+[node name="Leadership" type="Label" parent="CanvasLayer/KingFlatus"]
+layout_mode = 0
+offset_left = 92.0
+offset_top = 25.0
+offset_right = 180.0
+offset_bottom = 36.0
+text = "Strong"
+horizontal_alignment = 2
+
+[node name="Jousting" type="Label" parent="CanvasLayer/KingFlatus"]
+layout_mode = 0
+offset_left = 92.0
+offset_top = 38.0
+offset_right = 180.0
+offset_bottom = 49.0
+text = "Average"
+horizontal_alignment = 2
+
+[node name="Swordplay" type="Label" parent="CanvasLayer/KingFlatus"]
+layout_mode = 0
+offset_left = 92.0
+offset_top = 50.0
+offset_right = 180.0
+offset_bottom = 61.0
+text = "Good"
+horizontal_alignment = 2
+
+[connection signal="input_event" from="." to="." method="input_event"]
