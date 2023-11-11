@@ -20,5 +20,5 @@ var id: int
 @export var _color: Color
 @export var _mask: Image
 
-    
-    
+	
+	
