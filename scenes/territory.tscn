@@ -19,7 +19,7 @@ shader_parameter/fill_color = Color(0.760784, 0.760784, 0.760784, 0.423529)
 script = ExtResource("1_gm24w")
 
 [node name="HighlightOverlay" type="Sprite2D" parent="."]
-self_modulate = Color(0.886275, 0.870588, 0.890196, 0.666667)
+self_modulate = Color(0.886275, 0.870588, 0.890196, 1)
 z_index = 8
 material = SubResource("ShaderMaterial_prgsp")
 centered = false
@@ -30,3 +30,11 @@ self_modulate = Color(0.886275, 0.870588, 0.890196, 0.666667)
 z_index = 5
 material = SubResource("ShaderMaterial_bbdot")
 centered = false
+
+[node name="Crest" type="Sprite2D" parent="."]
+z_index = 20
+region_enabled = true
+
+[node name="Unit" type="Sprite2D" parent="."]
+z_index = 20
+region_enabled = true

@@ -49,7 +49,7 @@ func _create_masks():
 		territory._mask = Image.create( color_id.get_size().x, color_id.get_size().y, false, Image.FORMAT_RGBA8 )
 		#print("Creating mask for: ", territory._name)
 		for y in color_id.get_height():
-			 for x in color_id.get_width():
+			for x in color_id.get_width():
 				var color = image.get_pixel( x, y )
 				#print( "Color: ", color, "Territory: ", territory._color )
 				if color.is_equal_approx(territory._color):

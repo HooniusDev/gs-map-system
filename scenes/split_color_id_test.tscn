@@ -1,117 +1,32 @@
-[gd_scene load_steps=5 format=3 uid="uid://2qo2st5pspe2"]
+[gd_scene load_steps=4 format=3 uid="uid://2qo2st5pspe2"]
 
 [ext_resource type="Script" path="res://scripts/map/spilt_color_id.gd" id="1_pekwi"]
-[ext_resource type="Texture2D" uid="uid://dvkeqo38xo7bv" path="res://assets/map_sprites/nas/nas-colorid.png" id="2_iebvx"]
-[ext_resource type="PackedScene" uid="uid://coniyo4six435" path="res://scenes/territory.tscn" id="3_glnue"]
-[ext_resource type="Script" path="res://scripts/map/territory.gd" id="4_kgfli"]
+[ext_resource type="Texture2D" uid="uid://vi88da6x58ry" path="res://assets/map_sprites/nas/nas_map.png" id="3_1tsgd"]
+[ext_resource type="Texture2D" uid="uid://bmdwmeobamdke" path="res://assets/map_sprites/nas/util_images.png" id="4_mck8f"]
 
-[node name="SplitColorID" type="Node"]
+[node name="MapEdit" type="Node"]
 script = ExtResource("1_pekwi")
 
 [node name="ColorID" type="Sprite2D" parent="."]
-texture = ExtResource("2_iebvx")
 centered = false
+
+[node name="Visual" type="Sprite2D" parent="."]
+texture = ExtResource("3_1tsgd")
+centered = false
+
+[node name="Unit" type="Sprite2D" parent="."]
+texture = ExtResource("4_mck8f")
+region_enabled = true
+region_rect = Rect2(48, 10, 16, 22)
+
+[node name="Crest" type="Sprite2D" parent="."]
+texture = ExtResource("4_mck8f")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 18, 11)
 
 [node name="Map" type="Node2D" parent="."]
 
 [node name="Territories" type="Node2D" parent="Map"]
 
-[node name="Territory" type="Node2D" parent="Map/Territories" groups=["Territories"] instance=ExtResource("3_glnue")]
-position = Vector2(75, 0)
-script = ExtResource("4_kgfli")
-
-[node name="@Node2D@99128" type="Node2D" parent="Map/Territories" groups=["Territories"] instance=ExtResource("3_glnue")]
-position = Vector2(148, 0)
-script = ExtResource("4_kgfli")
-
-[node name="@Node2D@99129" type="Node2D" parent="Map/Territories" groups=["Territories"] instance=ExtResource("3_glnue")]
-position = Vector2(259, 0)
-script = ExtResource("4_kgfli")
-
-[node name="@Node2D@99130" type="Node2D" parent="Map/Territories" groups=["Territories"] instance=ExtResource("3_glnue")]
-position = Vector2(135, 11)
-script = ExtResource("4_kgfli")
-
-[node name="@Node2D@99131" type="Node2D" parent="Map/Territories" groups=["Territories"] instance=ExtResource("3_glnue")]
-position = Vector2(75, 35)
-script = ExtResource("4_kgfli")
-
-[node name="@Node2D@99132" type="Node2D" parent="Map/Territories" groups=["Territories"] instance=ExtResource("3_glnue")]
-position = Vector2(258, 40)
-script = ExtResource("4_kgfli")
-
-[node name="@Node2D@99133" type="Node2D" parent="Map/Territories" groups=["Territories"] instance=ExtResource("3_glnue")]
-position = Vector2(151, 46)
-script = ExtResource("4_kgfli")
-
-[node name="@Node2D@99134" type="Node2D" parent="Map/Territories" groups=["Territories"] instance=ExtResource("3_glnue")]
-position = Vector2(219, 46)
-script = ExtResource("4_kgfli")
-
-[node name="@Node2D@99135" type="Node2D" parent="Map/Territories" groups=["Territories"] instance=ExtResource("3_glnue")]
-position = Vector2(253, 46)
-script = ExtResource("4_kgfli")
-
-[node name="@Node2D@99136" type="Node2D" parent="Map/Territories" groups=["Territories"] instance=ExtResource("3_glnue")]
-position = Vector2(194, 50)
-script = ExtResource("4_kgfli")
-
-[node name="@Node2D@99137" type="Node2D" parent="Map/Territories" groups=["Territories"] instance=ExtResource("3_glnue")]
-position = Vector2(115, 70)
-script = ExtResource("4_kgfli")
-
-[node name="@Node2D@99138" type="Node2D" parent="Map/Territories" groups=["Territories"] instance=ExtResource("3_glnue")]
-position = Vector2(32, 71)
-script = ExtResource("4_kgfli")
-
-[node name="@Node2D@99139" type="Node2D" parent="Map/Territories" groups=["Territories"] instance=ExtResource("3_glnue")]
-position = Vector2(245, 76)
-script = ExtResource("4_kgfli")
-
-[node name="@Node2D@99140" type="Node2D" parent="Map/Territories" groups=["Territories"] instance=ExtResource("3_glnue")]
-position = Vector2(186, 79)
-script = ExtResource("4_kgfli")
-
-[node name="@Node2D@99141" type="Node2D" parent="Map/Territories" groups=["Territories"] instance=ExtResource("3_glnue")]
-position = Vector2(242, 91)
-script = ExtResource("4_kgfli")
-
-[node name="@Node2D@99142" type="Node2D" parent="Map/Territories" groups=["Territories"] instance=ExtResource("3_glnue")]
-position = Vector2(28, 101)
-script = ExtResource("4_kgfli")
-
-[node name="@Node2D@99143" type="Node2D" parent="Map/Territories" groups=["Territories"] instance=ExtResource("3_glnue")]
-position = Vector2(187, 103)
-script = ExtResource("4_kgfli")
-
-[node name="@Node2D@99144" type="Node2D" parent="Map/Territories" groups=["Territories"] instance=ExtResource("3_glnue")]
-position = Vector2(132, 106)
-script = ExtResource("4_kgfli")
-
-[node name="@Node2D@99145" type="Node2D" parent="Map/Territories" groups=["Territories"] instance=ExtResource("3_glnue")]
-position = Vector2(26, 107)
-script = ExtResource("4_kgfli")
-
-[node name="@Node2D@99146" type="Node2D" parent="Map/Territories" groups=["Territories"] instance=ExtResource("3_glnue")]
-position = Vector2(255, 113)
-script = ExtResource("4_kgfli")
-
-[node name="@Node2D@99147" type="Node2D" parent="Map/Territories" groups=["Territories"] instance=ExtResource("3_glnue")]
-position = Vector2(242, 118)
-script = ExtResource("4_kgfli")
-
-[node name="@Node2D@99148" type="Node2D" parent="Map/Territories" groups=["Territories"] instance=ExtResource("3_glnue")]
-position = Vector2(190, 120)
-script = ExtResource("4_kgfli")
-
-[node name="@Node2D@99149" type="Node2D" parent="Map/Territories" groups=["Territories"] instance=ExtResource("3_glnue")]
-position = Vector2(213, 120)
-script = ExtResource("4_kgfli")
-
-[node name="@Node2D@99150" type="Node2D" parent="Map/Territories" groups=["Territories"] instance=ExtResource("3_glnue")]
-position = Vector2(151, 143)
-script = ExtResource("4_kgfli")
-
-[node name="@Node2D@99151" type="Node2D" parent="Map/Territories" groups=["Territories"] instance=ExtResource("3_glnue")]
-position = Vector2(224, 155)
-script = ExtResource("4_kgfli")
+[connection signal="item_rect_changed" from="Crest" to="." method="_on_crest_changed"]

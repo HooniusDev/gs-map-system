@@ -1,6 +1,6 @@
+Sprite2D
 Map
 Node2D
-Sprite2D
 SplitColorID
 Label
 Panel
@@ -12,4 +12,3 @@ Node
 HSeparator
 MarginContainer
 VBoxContainer
-PanelContainer

@@ -1,4 +1,3 @@
-res://scripts/map/spilt_color_id.gd
 res://scenes/split_color_id_test.tscn
 res://scenes/Map.gd
 res://assets/shaders/outline_2.gdshader
@@ -6,12 +5,3 @@ res://scenes/Maps/dotc_map_data.tres
 res://addons/generic_pixel_ui/stylebox/panels/panel_square_dark.stylebox
 res://assets/shaders/outline.gdshader
 res://assets/shaders/selected_outline.gdshader
-res://scenes/factions.gd
-res://scripts/map/main.gd
-res://scripts/map/map_editor.gd
-res://scripts/map/map_manager.gd
-res://scenes/selected_territory_info.gd
-res://scripts/map/territory.gd
-res://scripts/map/territory_data.gd
-res://scenes/map_load.tscn
-res://scenes/territory.tscn
