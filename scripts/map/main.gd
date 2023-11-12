@@ -1,6 +1,11 @@
 extends StaticBody2D
 class_name Main
 
+### NOT USED AT THE MOMENT!
+## WILL BE REPLACED WITH EDITOR SCRIPT
+## MAP HANDLES ITS OWN STATE AND INPUT
+## ENOUGH WITH THE CAPS!!! REALLY...
+
 signal selected_territory_changed
 
 var hover_territory_id: int = -1

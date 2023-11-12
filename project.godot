@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="gs-map-system"
-run/main_scene="res://scenes/map_load.tscn"
+run/main_scene="res://scenes/editor.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 

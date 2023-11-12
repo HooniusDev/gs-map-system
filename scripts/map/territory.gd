@@ -4,6 +4,10 @@ class_name Territory
 
 ## Node Container for Territory
 
+### TODO ###
+## Remove visual stuff 
+
+
 ## Index in the Territory node 
 @export var id: int = -1
 
