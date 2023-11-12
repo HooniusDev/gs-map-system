@@ -44,7 +44,7 @@ func set_sprite_to_territory( index: int, sprite: Sprite2D ) -> void:
 	if index >= colors.size():
 		print("Set Sprite failed due to oveflow ", index)
 		return
-	sprite.position = mask_offsets[index]
+	sprite.position = mask_offsets[index] + Vector2i( position )
 	sprite.texture = ImageTexture.create_from_image( masks[index] )
 
 func create_masks( ) -> void:

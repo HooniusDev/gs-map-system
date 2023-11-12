@@ -14,3 +14,6 @@ res://scenes/select_starting_location.gd
 res://scripts/map/main.gd
 res://scripts/map/territory.gd
 res://scripts/map/map_data.gd
+res://scenes/editor_camera.gd
+res://scenes/test_screen.tscn
+res://addons/generic_pixel_ui/generic_pixel_ui.theme
