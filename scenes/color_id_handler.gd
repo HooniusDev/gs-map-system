@@ -1,9 +1,6 @@
 extends TextureRect
 class_name ColorID
 
-## TODO: implement this really
-signal texture_changed
-
 ### This node needs to update info about color_id image
 ## colors_count
 ## images for the territories
@@ -22,14 +19,24 @@ signal texture_changed
 @export var crest_locations: Array[Vector2i] = []
 
 func _ready() -> void:
-	if texture:
-		load_sprite()
-	_on_color_id_loaded()
+	#if texture:
+		#load_sprite()
+	#_on_color_id_loaded()
+	pass
+
+func load_texture( path: String ) -> void:
+	if file_path != path:
+		texture = load(path)
+		_handle_sprite()
+		MapEditor.color_id_changed.emit()
+	else:
+		print("loading same image again")
 
 func _on_color_id_loaded():
 	MapEditor.color_id_changed.emit()
 
-func load_sprite() -> void:
+func _handle_sprite( ) -> void:
+	## all kinds of check here!
 	create_masks()
 	crop_masks()
 	
@@ -54,9 +61,13 @@ func set_sprite_to_territory( index: int, sprite: Sprite2D ) -> void:
 
 func create_masks( ) -> void:
 	
+	masks = []
+	colors = []
+	
 	 # load the ColorID image
 	var source = texture.get_image()
-	
+	if not is_instance_valid(source):
+		printerr("FDAFA")
 	for y in source.get_height():
 		for x in source.get_width():
 			var color = source.get_pixel( x, y )

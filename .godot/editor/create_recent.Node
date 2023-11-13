@@ -1,3 +1,9 @@
+FileDialog
+PopupMenu
+MenuBar
+TabContainer
+TabBar
+GridContainer
 PanelContainer
 HBoxContainer
 LineEdit
@@ -7,8 +13,3 @@ VBoxContainer
 MarginContainer
 SubViewport
 SubViewportContainer
-HSplitContainer
-CanvasLayer
-Button
-Panel
-Control

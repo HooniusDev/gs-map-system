@@ -1,8 +1,10 @@
-[gd_scene load_steps=18 format=3 uid="uid://ldp3u5c5pxgg"]
+[gd_scene load_steps=20 format=3 uid="uid://ldp3u5c5pxgg"]
 
 [ext_resource type="Theme" uid="uid://brunryg3jh5er" path="res://addons/generic_pixel_ui/generic_pixel_ui.theme" id="1_t7tw6"]
 [ext_resource type="Texture2D" uid="uid://crojbl7l5jp3v" path="res://addons/generic_pixel_ui/sprites/gdp_ui_styles_rearrange.png" id="2_8pw5y"]
 [ext_resource type="Script" path="res://scripts/map/pixel_map.gd" id="2_6305a"]
+[ext_resource type="Script" path="res://scenes/map_editor_screen.gd" id="2_yswuh"]
+[ext_resource type="Script" path="res://scenes/menu_bar.gd" id="3_cnmq7"]
 [ext_resource type="Script" path="res://scenes/editor_camera.gd" id="3_qv1m7"]
 [ext_resource type="Script" path="res://scenes/territories_list.gd" id="3_tfee1"]
 [ext_resource type="Shader" path="res://assets/shaders/outline_2.gdshader" id="4_sbcx5"]
@@ -33,7 +35,7 @@ shader = ExtResource("4_sbcx5")
 shader_parameter/outline_color = Color(0.0470588, 0.0470588, 0.0470588, 0.85098)
 shader_parameter/fill_color = Color(1, 1, 1, 0.682353)
 
-[node name="MapEditor" type="PanelContainer"]
+[node name="MapEditorScreen" type="PanelContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -42,6 +44,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("1_t7tw6")
 theme_override_styles/panel = SubResource("StyleBoxEmpty_67x27")
+script = ExtResource("2_yswuh")
 
 [node name="CanvasLayerUI" type="CanvasLayer" parent="."]
 layer = 2
@@ -56,6 +59,31 @@ mouse_filter = 2
 theme = ExtResource("1_t7tw6")
 theme_override_constants/separation = 0
 
+[node name="MenuBar" type="MenuBar" parent="CanvasLayerUI/VBoxContainer"]
+layout_mode = 2
+flat = true
+script = ExtResource("3_cnmq7")
+
+[node name="File" type="PopupMenu" parent="CanvasLayerUI/VBoxContainer/MenuBar"]
+item_count = 4
+item_0/text = "New Map"
+item_0/id = 0
+item_1/text = "Load Map"
+item_1/id = 1
+item_2/text = "Save"
+item_2/id = 2
+item_3/text = "Save as.."
+item_3/id = 3
+
+[node name="Sprite" type="PopupMenu" parent="CanvasLayerUI/VBoxContainer/MenuBar"]
+item_count = 3
+item_0/text = "Load ColorID"
+item_0/id = 0
+item_1/text = "Load Visual"
+item_1/id = 1
+item_2/text = "Load Borders"
+item_2/id = 2
+
 [node name="TopBar" type="PanelContainer" parent="CanvasLayerUI/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("1_t7tw6")
@@ -66,19 +94,19 @@ layout_mode = 2
 text = "TopBar"
 horizontal_alignment = 1
 
-[node name="PanelContainer" type="HSplitContainer" parent="CanvasLayerUI/VBoxContainer"]
+[node name="HSplitContainer" type="HSplitContainer" parent="CanvasLayerUI/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 split_offset = -115
 
-[node name="LeftPanel" type="PanelContainer" parent="CanvasLayerUI/VBoxContainer/PanelContainer"]
+[node name="LeftPanel" type="PanelContainer" parent="CanvasLayerUI/VBoxContainer/HSplitContainer"]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("1_t7tw6")
 
-[node name="PanelIdentifier" type="Label" parent="CanvasLayerUI/VBoxContainer/PanelContainer/LeftPanel"]
+[node name="PanelIdentifier" type="Label" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/LeftPanel"]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
@@ -86,70 +114,69 @@ text = "Bottom
 "
 horizontal_alignment = 1
 
-[node name="TerritoriesList" type="VBoxContainer" parent="CanvasLayerUI/VBoxContainer/PanelContainer/LeftPanel"]
+[node name="TabContainer" type="TabContainer" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/LeftPanel"]
+layout_mode = 2
+
+[node name="Territories" type="VBoxContainer" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/LeftPanel/TabContainer"]
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_constants/separation = 0
 script = ExtResource("3_tfee1")
 
-[node name="HSplitContainer" type="HSplitContainer" parent="CanvasLayerUI/VBoxContainer/PanelContainer"]
+[node name="HSplitContainer" type="HSplitContainer" parent="CanvasLayerUI/VBoxContainer/HSplitContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 split_offset = 110
 
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayerUI/VBoxContainer/PanelContainer/HSplitContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/HSplitContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_8njoy")
 
-[node name="VSplitContainer" type="VSplitContainer" parent="CanvasLayerUI/VBoxContainer/PanelContainer/HSplitContainer/PanelContainer"]
+[node name="VSplitContainer" type="VSplitContainer" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/HSplitContainer/PanelContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_constants/separation = 0
 theme_override_constants/minimum_grab_thickness = 2
-split_offset = 100
+split_offset = 300
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayerUI/VBoxContainer/PanelContainer/HSplitContainer/PanelContainer/VSplitContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/HSplitContainer/PanelContainer/VSplitContainer"]
 layout_mode = 2
 
-[node name="MapView" type="PanelContainer" parent="CanvasLayerUI/VBoxContainer/PanelContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer"]
+[node name="MapView" type="PanelContainer" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_mj3u8")
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="CanvasLayerUI/VBoxContainer/PanelContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView"]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView"]
 layout_mode = 2
 
-[node name="SubViewport" type="SubViewport" parent="CanvasLayerUI/VBoxContainer/PanelContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/SubViewportContainer"]
+[node name="SubViewport" type="SubViewport" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/SubViewportContainer"]
 handle_input_locally = false
 snap_2d_transforms_to_pixel = true
 canvas_item_default_texture_filter = 0
-size = Vector2i(324, 231)
+size = Vector2i(324, 300)
 render_target_update_mode = 4
 
-[node name="CanvasLayerMap" type="CanvasLayer" parent="CanvasLayerUI/VBoxContainer/PanelContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/SubViewportContainer/SubViewport"]
+[node name="CanvasLayerMap" type="CanvasLayer" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/SubViewportContainer/SubViewport"]
 follow_viewport_enabled = true
 
-[node name="Map" type="Node2D" parent="CanvasLayerUI/VBoxContainer/PanelContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/SubViewportContainer/SubViewport/CanvasLayerMap"]
+[node name="Map" type="Node2D" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/SubViewportContainer/SubViewport/CanvasLayerMap"]
 unique_name_in_owner = true
-position = Vector2(0, 3)
 script = ExtResource("2_6305a")
 
-[node name="Camera2D" type="Camera2D" parent="CanvasLayerUI/VBoxContainer/PanelContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/SubViewportContainer/SubViewport/CanvasLayerMap"]
-position = Vector2(-1, 4)
+[node name="Camera2D" type="Camera2D" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/SubViewportContainer/SubViewport/CanvasLayerMap"]
 anchor_mode = 0
 script = ExtResource("3_qv1m7")
 
-[node name="Sprites" type="Control" parent="CanvasLayerUI/VBoxContainer/PanelContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/SubViewportContainer/SubViewport/CanvasLayerMap"]
+[node name="Sprites" type="Control" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/SubViewportContainer/SubViewport/CanvasLayerMap"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 3.0
-offset_bottom = 3.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
@@ -157,7 +184,7 @@ size_flags_vertical = 3
 mouse_filter = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="ColorID" type="TextureRect" parent="CanvasLayerUI/VBoxContainer/PanelContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/SubViewportContainer/SubViewport/CanvasLayerMap/Sprites"]
+[node name="ColorID" type="TextureRect" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/SubViewportContainer/SubViewport/CanvasLayerMap/Sprites"]
 unique_name_in_owner = true
 layout_mode = 0
 offset_right = 320.0
@@ -166,50 +193,55 @@ mouse_filter = 0
 texture = ExtResource("10_fd200")
 script = ExtResource("7_vlro3")
 
-[node name="Visual" type="TextureRect" parent="CanvasLayerUI/VBoxContainer/PanelContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/SubViewportContainer/SubViewport/CanvasLayerMap/Sprites"]
+[node name="Visual" type="TextureRect" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/SubViewportContainer/SubViewport/CanvasLayerMap/Sprites"]
+visible = false
 layout_mode = 0
 offset_right = 320.0
 offset_bottom = 199.0
 texture = ExtResource("11_q22l7")
 
-[node name="Borders" type="TextureRect" parent="CanvasLayerUI/VBoxContainer/PanelContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/SubViewportContainer/SubViewport/CanvasLayerMap/Sprites"]
+[node name="Borders" type="TextureRect" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/SubViewportContainer/SubViewport/CanvasLayerMap/Sprites"]
+visible = false
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 texture = ExtResource("12_8juqc")
 
-[node name="HoverVisualizer" type="Sprite2D" parent="CanvasLayerUI/VBoxContainer/PanelContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/SubViewportContainer/SubViewport/CanvasLayerMap/Sprites"]
+[node name="HoverVisualizer" type="Sprite2D" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/SubViewportContainer/SubViewport/CanvasLayerMap/Sprites"]
 z_index = 100
 material = SubResource("ShaderMaterial_sd7re")
 position = Vector2(153, 39)
 centered = false
 script = ExtResource("5_mplee")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayerUI/VBoxContainer/PanelContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme = ExtResource("1_t7tw6")
 theme_override_constants/separation = 3
 
-[node name="ZoomOut" type="Button" parent="CanvasLayerUI/VBoxContainer/PanelContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/HBoxContainer"]
+[node name="ZoomOut" type="Button" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
 focus_mode = 0
 text = "-"
 
-[node name="ZoomIn" type="Button" parent="CanvasLayerUI/VBoxContainer/PanelContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/HBoxContainer"]
+[node name="ZoomIn" type="Button" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
 focus_mode = 0
 text = "+"
 
-[node name="BottomPanel" parent="CanvasLayerUI/VBoxContainer/PanelContainer/HSplitContainer/PanelContainer/VSplitContainer" instance=ExtResource("14_lp85n")]
+[node name="BottomPanel" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/HSplitContainer/PanelContainer/VSplitContainer" instance=ExtResource("14_lp85n")]
 layout_mode = 2
 
-[node name="PanelContainer2" type="PanelContainer" parent="CanvasLayerUI/VBoxContainer/PanelContainer/HSplitContainer"]
+[node name="PanelContainer2" type="PanelContainer" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/HSplitContainer"]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="FileDialog" type="FileDialog" parent="CanvasLayerUI/VBoxContainer"]
+size = Vector2i(312, 154)

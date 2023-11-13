@@ -27,6 +27,7 @@ func _ready() -> void:
 	
 func _update_territories() -> void:
 	print(" _update_territories ")
+	territories.clear()
 	## if id dont exist createa new TerritoryData 
 	for i in color_id.colors.size():
 		if not territories.size() > i or territories[i]:
@@ -36,8 +37,6 @@ func _update_territories() -> void:
 			territory_data.name = "territory_" + str(i)
 			territories.append( territory_data )
 	MapEditor.territory_list_changed.emit()
-	
-	
 	
 	
 func _unhandled_input(event: InputEvent) -> void: #input(viewport: Node, event: InputEvent, shape_idx: int):

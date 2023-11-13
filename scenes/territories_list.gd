@@ -22,7 +22,9 @@ func _highlight( id: int ) -> void:
 	_highlighted = id
 
 func _update_list() -> void:
-	print("")
+	
+	_clear()
+	
 	var t_array = MapEditor.edited_map.territories
 	for t in t_array:
 		var list_item = TERRITORY_LIST_ITEM.instantiate()
@@ -33,6 +35,8 @@ func _update_list() -> void:
 	pass
 	
 func _clear() -> void :
+	print("Clear List")
 	for node in get_children():
+		remove_child(node)
 		node.queue_free()
 

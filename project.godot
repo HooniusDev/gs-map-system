@@ -22,10 +22,10 @@ MapEditor="*res://scripts/autoloads/map_editor.gd"
 [display]
 
 window/size/viewport_width=636
-window/size/viewport_height=277
+window/size/viewport_height=360
 window/size/always_on_top=true
 window/size/window_width_override=1272
-window/size/window_height_override=554
+window/size/window_height_override=720
 window/stretch/aspect="ignore"
 window/stretch/scale=2.0
 window/stretch/scale_mode="integer"

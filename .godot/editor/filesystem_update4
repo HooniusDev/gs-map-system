@@ -16,3 +16,5 @@ res://scenes/color_id_handler.gd
 res://scenes/territories_list.gd
 res://scenes/editor/territory_list_item.tscn
 res://addons/generic_pixel_ui/generic_pixel_ui.theme
+res://scenes/map_editor_screen.gd
+res://scenes/menu_bar.gd
