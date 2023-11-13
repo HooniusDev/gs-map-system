@@ -6,31 +6,42 @@ class_name PixelMap
 
 ## Graphics of the map
 #@onready var map_sprite: Sprite2D = $Images/Map
-@onready var color_id: TextureRect = %ColorID
-
-## Color ID image for easier color picking
-@onready var color_id_image: Image 
+@onready var color_id: ColorID = %ColorID as ColorID
 
 ## Bounds of the Map
-var bounds: Rect2i
+#var bounds: Rect2i
 
 @export var hover_territory_id: int = -1
 @export var focus_territory_id: int = -1
 
-signal focus_territory_changed
-signal hover_territory_changed
+#signal focus_territory_changed
+#signal hover_territory_changed
+
+@export var territories: Array[TerritoryData] = []
+
 
 func _ready() -> void:
 	#bounds = Rect2i( 0,0, color_id_image.get_size().x, color_id_image.get_size().y )
-	pass
-
-## Gets color at position
-func get_color( pos: Vector2i ) -> Color:
-	var _color = color_id_image.get_pixelv( pos )
-	return _color
+	MapEditor.edited_map = self
+	MapEditor.color_id_changed.connect( _update_territories )
+	
+func _update_territories() -> void:
+	print(" _update_territories ")
+	## if id dont exist createa new TerritoryData 
+	for i in color_id.colors.size():
+		if not territories.size() > i or territories[i]:
+			var territory_data = TerritoryData.new()
+			territory_data.colorID = color_id.colors[i]
+			territory_data.ID = i
+			territory_data.name = "territory_" + str(i)
+			territories.append( territory_data )
+	MapEditor.territory_list_changed.emit()
+	
+	
+	
 	
 func _unhandled_input(event: InputEvent) -> void: #input(viewport: Node, event: InputEvent, shape_idx: int):
-	print("mouuuuusse")
+
 	## Update Mouse Position
 	var mouse_pos: Vector2i = get_local_mouse_position().round()
 	
@@ -45,7 +56,7 @@ func _unhandled_input(event: InputEvent) -> void: #input(viewport: Node, event: 
 		#var territory = map_manager.get_territory_by_id(selected_territory_id)
 		
 		# TODO emit this for Global editor state to emit lost_focus on old one
-		focus_territory_changed.emit(focus_territory_id) #
+		MapEditor.focus_territory_changed.emit(focus_territory_id) #
 		
 		## Faction 0 gets to conquer the territory for now
 		#$Factions.accuire_territory( 0, territory )
@@ -63,13 +74,9 @@ func _unhandled_input(event: InputEvent) -> void: #input(viewport: Node, event: 
 		if territory_id != hover_territory_id:
 			
 			hover_territory_id = territory_id
-			hover_territory_changed.emit(hover_territory_id)
+			MapEditor.hover_territory_changed.emit(hover_territory_id)
 			#color_id.set_sprite_to_territory( hover_territory_id, $"../CanvasLayer/Sprites/HoverVisualizer" )
 
-		
-
-
-#func _on_map_gui_input(event: InputEvent) -> void:
-	#pass # Replace with function body.
+	
 
 

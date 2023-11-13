@@ -11,7 +11,7 @@ signal selected_territory_changed
 var hover_territory_id: int = -1
 var selected_territory_id: int = -1
 			
-@onready var map_manager: MapManager = $MapManager as MapManager
+@onready var map_manager: = $MapManager
 	
 func input_event(viewport: Node, event: InputEvent, shape_idx: int):
 	

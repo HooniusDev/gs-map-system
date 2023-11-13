@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="gs-map-system"
-run/main_scene="res://scenes/editor.tscn"
+run/main_scene="res://scenes/test_screen.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+MapEditor="*res://scripts/autoloads/map_editor.gd"
 
 [display]
 

@@ -8,7 +8,7 @@ extends Sprite2D
 ## Add a link to territory?
 
 func _ready() -> void:
-	%Map.hover_territory_changed.connect(_on_hover_territory_changed)
+	MapEditor.hover_territory_changed.connect(_on_hover_territory_changed)
 
 func _on_hover_territory_changed(id: int):
 	%ColorID.set_sprite_to_territory(id, self)

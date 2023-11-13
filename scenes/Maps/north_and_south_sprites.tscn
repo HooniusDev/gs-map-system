@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://tkgecrhc1vcr"]
+
+[ext_resource type="Texture2D" uid="uid://dvkeqo38xo7bv" path="res://assets/map_sprites/nas/nas-colorid.png" id="1_mqdvy"]
+[ext_resource type="Script" path="res://scenes/color_id_handler.gd" id="2_yrw7e"]
+[ext_resource type="Texture2D" uid="uid://vi88da6x58ry" path="res://assets/map_sprites/nas/nas_map.png" id="3_uxqp8"]
+[ext_resource type="Texture2D" uid="uid://bpu2oscnu4rar" path="res://assets/map_sprites/nas/nas_borders.png" id="4_dm76h"]
+
+[node name="Sprites23" type="PanelContainer"]
+offset_top = 3.0
+offset_right = 320.0
+offset_bottom = 202.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="ColorID" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("1_mqdvy")
+script = ExtResource("2_yrw7e")
+
+[node name="Visual" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("3_uxqp8")
+
+[node name="Borders" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("4_dm76h")

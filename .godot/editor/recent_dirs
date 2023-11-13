@@ -1,4 +1,6 @@
-res://scenes
-res://scripts/map
+res://addons/generic_pixel_ui/stylebox/panels
+res://scenes/editor
 res://scenes/Maps
+res://scenes
 res://scripts/autoloads
+res://scripts/map

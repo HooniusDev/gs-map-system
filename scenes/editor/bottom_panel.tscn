@@ -1,0 +1,62 @@
+[gd_scene load_steps=4 format=3 uid="uid://bveo17rxkm6dn"]
+
+[ext_resource type="StyleBox" uid="uid://c8wt5uxba6pus" path="res://addons/generic_pixel_ui/stylebox/panels/panel_square_dark.stylebox" id="1_8vbbw"]
+[ext_resource type="Theme" uid="uid://brunryg3jh5er" path="res://addons/generic_pixel_ui/generic_pixel_ui.theme" id="1_u03e2"]
+[ext_resource type="Script" path="res://scenes/editor/bottom_panel.gd" id="3_eyrnq"]
+
+[node name="BottomPanel" type="PanelContainer"]
+custom_minimum_size = Vector2(0, 30)
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -27.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_u03e2")
+theme_override_styles/panel = ExtResource("1_8vbbw")
+script = ExtResource("3_eyrnq")
+
+[node name="PanelIdentifier" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "Bottom
+"
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="HoverID" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Text" type="Label" parent="VBoxContainer/HoverID"]
+layout_mode = 2
+text = "Mouse Hover ID:"
+
+[node name="Value" type="Label" parent="VBoxContainer/HoverID"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+text = "-1"
+horizontal_alignment = 2
+
+[node name="HoverName" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="Text" type="Label" parent="VBoxContainer/HoverName"]
+layout_mode = 2
+text = "Mouse Hover Territory Name:"
+
+[node name="Value" type="Label" parent="VBoxContainer/HoverName"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "N/A"
+horizontal_alignment = 2

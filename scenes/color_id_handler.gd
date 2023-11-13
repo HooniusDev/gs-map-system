@@ -1,4 +1,5 @@
 extends TextureRect
+class_name ColorID
 
 ## TODO: implement this really
 signal texture_changed
@@ -23,6 +24,10 @@ signal texture_changed
 func _ready() -> void:
 	if texture:
 		load_sprite()
+	_on_color_id_loaded()
+
+func _on_color_id_loaded():
+	MapEditor.color_id_changed.emit()
 
 func load_sprite() -> void:
 	create_masks()
@@ -34,10 +39,10 @@ func get_id_by_color( color: Color ) -> int:
 			return id
 	return -1
 
-func get_id_by_position( position: Vector2i ) -> int:
-	if not get_rect().has_point(position):
+func get_id_by_position( pos: Vector2i ) -> int:
+	if pos.x >= texture.get_width() or pos.y >= texture.get_height():
 		return -1
-	var color = texture.get_image().get_pixelv( position )
+	var color = texture.get_image().get_pixelv( pos )
 	return get_id_by_color( color )
 
 func set_sprite_to_territory( index: int, sprite: Sprite2D ) -> void:
@@ -103,4 +108,3 @@ func crop_masks(  ) -> void:
 		mask_offsets.append( Vector2i(left, top) )
 
 		masks[id] = cropped
-		#cropped_array.append(texture)
