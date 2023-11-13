@@ -2,6 +2,8 @@ extends PanelContainer
 
 enum SpriteType { ColorID, Visual, Borders  }
 
+### TODO: move all file access to own node ###
+
 func _load_image( type: String ):
 	# open file dialog
 	# set file as Sprites child by type

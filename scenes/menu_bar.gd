@@ -8,6 +8,8 @@ func _ready() -> void:
 	pass # Replace with function body.
 
 func _on_sprite_menu_pressed( id: int ) -> void:
+	### Warn user if there is already a ColorID ###
+	### TODO: Implement New Map functionality ###
 	print("sprite menu pressed: " , sprite_menu.get_item_text(id) )
 	if ( id == 0 ):
 		var file_dialog: FileDialog = $"../FileDialog" as FileDialog

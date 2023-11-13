@@ -26,6 +26,7 @@ func _ready() -> void:
 
 func load_texture( path: String ) -> void:
 	if file_path != path:
+		### Load was much easier than i thought ###
 		texture = load(path)
 		_handle_sprite()
 		MapEditor.color_id_changed.emit()
@@ -37,6 +38,7 @@ func _on_color_id_loaded():
 
 func _handle_sprite( ) -> void:
 	## all kinds of check here!
+	### Should we create all new or just update data ###
 	create_masks()
 	crop_masks()
 	
