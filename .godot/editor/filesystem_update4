@@ -11,3 +11,4 @@ res://scenes/editor/territories_tab.tscn
 res://scenes/editor/territory_list_item.tscn
 res://scenes/color_id_handler.gd
 res://scripts/map/territory_data.gd
+res://scripts/map/hover_visualizer.gd

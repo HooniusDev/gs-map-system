@@ -94,7 +94,9 @@ func create_masks( ) -> void:
 				image.set_pixel(x,y, Color.WHITE)
 				colors.append(color)
 
-
+### TODO:
+## add a +1 radius to masks
+## highlight is cut off in the borders
 func crop_masks(  ) -> void:
 	for id in colors.size():
 		var image = masks[id]

@@ -23,6 +23,7 @@ horizontal_alignment = 1
 [node name="Name" type="LineEdit" parent="PanelContainer"]
 custom_minimum_size = Vector2(106.115, 0)
 layout_mode = 2
+mouse_default_cursor_shape = 0
 text = "TerritoryName"
 max_length = 18
 

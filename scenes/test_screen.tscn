@@ -32,8 +32,8 @@ region_rect = Rect2(1, 21, 9, 9)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sd7re"]
 shader = ExtResource("4_sbcx5")
-shader_parameter/outline_color = Color(0.0470588, 0.0470588, 0.0470588, 0.85098)
-shader_parameter/fill_color = Color(1, 1, 1, 0.682353)
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/fill_color = Color(1, 1, 1, 0.360784)
 
 [node name="MapEditorScreen" type="PanelContainer"]
 anchors_preset = 15

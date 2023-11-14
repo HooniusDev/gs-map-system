@@ -7,6 +7,8 @@ extends Sprite2D
 ## Maybe use this class for Selected and Conquered
 ## Add a link to territory?
 
+
+
 func _ready() -> void:
 	MapEditor.hover_territory_changed.connect(_on_hover_territory_changed)
 

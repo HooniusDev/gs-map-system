@@ -1,5 +1,9 @@
 extends VBoxContainer
 
+### TODO:
+### Move the list item functions into items themself and handle adding 
+### and removing in this one
+
 const TERRITORY_LIST_ITEM = preload("res://scenes/editor/territory_list_item.tscn")
 
 var _highlighted: int
@@ -49,6 +53,7 @@ func update_line( territory_data: TerritoryData ) -> void:
 	
 func _rename_territory( name: String, territory_data: TerritoryData ) -> void:
 	print("renaming territory: " , territory_data.ID)
+	### Todo warn if name not unique
 	territory_data.name = name
 
 func _clear() -> void :

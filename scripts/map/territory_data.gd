@@ -7,6 +7,8 @@ class_name TerritoryData
 		if name != value:
 			name = value
 			emit_changed()
+	get:
+		return name
 
 ## ID of occupying faction
 @export var factionID: int = -1
@@ -26,5 +28,5 @@ class_name TerritoryData
 ### Hope these will be gone too ###
 ## Color used for highlights
 @export var _mask: Image
-
 	
+
