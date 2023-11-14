@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://fscrg4xts0hv"]
+
+[ext_resource type="Script" path="res://scenes/territories_list.gd" id="1_ctukc"]
+
+[node name="Territories" type="VBoxContainer"]
+size_flags_vertical = 0
+theme_override_constants/separation = 0
+script = ExtResource("1_ctukc")

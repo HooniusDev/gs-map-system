@@ -6,8 +6,8 @@
 [ext_resource type="Script" path="res://scenes/map_editor_screen.gd" id="2_yswuh"]
 [ext_resource type="Script" path="res://scenes/menu_bar.gd" id="3_cnmq7"]
 [ext_resource type="Script" path="res://scenes/editor_camera.gd" id="3_qv1m7"]
-[ext_resource type="Script" path="res://scenes/territories_list.gd" id="3_tfee1"]
 [ext_resource type="Shader" path="res://assets/shaders/outline_2.gdshader" id="4_sbcx5"]
+[ext_resource type="PackedScene" uid="uid://fscrg4xts0hv" path="res://scenes/editor/territories_tab.tscn" id="5_2ong5"]
 [ext_resource type="Script" path="res://scripts/map/hover_visualizer.gd" id="5_mplee"]
 [ext_resource type="Script" path="res://scenes/color_id_handler.gd" id="7_vlro3"]
 [ext_resource type="Texture2D" uid="uid://dlhhdwoikjg4o" path="res://assets/map_sprites/dotc/dotc_color_id.png" id="10_fd200"]
@@ -117,11 +117,8 @@ horizontal_alignment = 1
 [node name="TabContainer" type="TabContainer" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/LeftPanel"]
 layout_mode = 2
 
-[node name="Territories" type="VBoxContainer" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/LeftPanel/TabContainer"]
+[node name="Territories" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/LeftPanel/TabContainer" instance=ExtResource("5_2ong5")]
 layout_mode = 2
-size_flags_vertical = 0
-theme_override_constants/separation = 0
-script = ExtResource("3_tfee1")
 
 [node name="HSplitContainer" type="HSplitContainer" parent="CanvasLayerUI/VBoxContainer/HSplitContainer"]
 layout_mode = 2
@@ -189,7 +186,6 @@ unique_name_in_owner = true
 layout_mode = 0
 offset_right = 320.0
 offset_bottom = 199.0
-mouse_filter = 0
 texture = ExtResource("10_fd200")
 script = ExtResource("7_vlro3")
 

@@ -1,0 +1,179 @@
+[gd_scene load_steps=5 format=3 uid="uid://d00hkanh5rc5a"]
+
+[ext_resource type="StyleBox" uid="uid://dsnfy2xgi0hu7" path="res://addons/generic_pixel_ui/stylebox/buttons/dark/button_pressed_dark.stylebox" id="1_7lm4f"]
+[ext_resource type="Theme" uid="uid://brunryg3jh5er" path="res://addons/generic_pixel_ui/generic_pixel_ui.theme" id="1_hjoph"]
+[ext_resource type="Texture2D" uid="uid://dlhhdwoikjg4o" path="res://assets/map_sprites/dotc/dotc_color_id.png" id="1_km3s0"]
+
+[sub_resource type="GDScript" id="GDScript_dq3gp"]
+resource_name = "mouse_pick_texture_rect"
+script/source = "extends TextureRect
+#
+var hover_territory_id: int = -1
+@onready var hover: TextureRect = $Hover
+#
+var mouse_pos: Vector2i
+var mouse_offset: Vector2i
+@onready var scroller: ScrollContainer = $\"..\"
+
+var zoom: float = 1
+#
+#
+func _gui_input(event: InputEvent) -> void:
+	
+	if event.is_action_released(\"zoom_in\"):
+		custom_minimum_size *= 1.1
+		
+	if event.is_action_released(\"zoom_out\"):
+		custom_minimum_size *= .9
+	
+	mouse_pos = get_local_mouse_position().round()
+	
+	#print(\"Mouse: \" , mouse_pos)
+	
+	mouse_offset = Vector2i(scroller.scroll_horizontal,scroller.scroll_vertical)
+	
+	#print(\"offset: \" , offset)
+	
+	#var territory_id = get_id_by_position( mouse_pos + mouse_offset )
+#
+	### Mouse is not over a Territory
+	#if territory_id == -1:
+		#return
+	##print(\"Mouse over map\")
+	### Mouse has just moved over a different Territory
+	#if territory_id != hover_territory_id:
+		#
+		#hover_territory_id = territory_id
+		#set_texture_to_territory( hover_territory_id, mouse_offset )
+#
+#func _draw() -> void:
+	##draw_circle( mouse_pos, 1.0, Color.RED )
+	##draw_circle( mouse_pos + mouse_offset, 1.0, Color.BLUE )
+	#pass
+#
+#func _ready() -> void:
+	#create_masks()
+	#crop_masks()
+#
+#@export var colors: Array[Color] = []
+#@export var masks: Array[Image] = []
+#@export var mask_offsets: Array[Vector2i] = []
+#
+#func set_texture_to_territory( index: int, offset: Vector2i ) -> void:
+	#if index >= colors.size():
+		#print(\"Set Sprite failed due to oveflow \", index)
+		#return
+	##hover.scale *= 2
+	#hover.size = size
+	#hover.position = mask_offsets[index] + Vector2i( position ) + offset
+	#hover.texture = ImageTexture.create_from_image( masks[index] )
+#
+#func get_id_by_color( color: Color ) -> int:
+	#for id in colors.size():
+		#if colors[id].is_equal_approx(color):
+			#return id
+	#return -1
+	#
+#func get_id_by_position( pos: Vector2i ) -> int:
+	#if pos.x >= texture.get_width() or pos.y >= texture.get_height():
+		#return -1
+	#var color = texture.get_image().get_pixelv( pos )
+	#return get_id_by_color( color )
+#
+#func create_masks( ) -> void:
+	#
+	#masks = []
+	#colors = []
+	#
+	 ## load the ColorID image
+	#var source = texture.get_image()
+	#if not is_instance_valid(source):
+		#printerr(\"FDAFA\")
+	#for y in source.get_height():
+		#for x in source.get_width():
+			#var color = source.get_pixel( x, y )
+			## transparent -> discard pixel
+			#if color.a < 0.01:
+				#continue
+			## red -> crest location
+			#if color.is_equal_approx( \"ff0000\" ):
+				## get pixel right to this
+				#color = source.get_pixel( x+1, y )
+				##crest_locations.append( Vector2i(x,y) )
+			#var id = get_id_by_color( color )
+			## this is already in colors
+			#if id > -1:
+				#masks[id].set_pixel(x,y, Color.WHITE)
+			## new color so create new entry to colors
+			#else:
+				#var image = Image.create( source.get_size().x, source.get_size().y, false, Image.FORMAT_RGBA8 )
+				#masks.append( image )
+				#image.set_pixel(x,y, Color.WHITE)
+				#colors.append(color)
+#
+#func crop_masks(  ) -> void:
+	#for id in colors.size():
+		#var image = masks[id]
+		## based on image white pixels crop
+		#var rect: Rect2i = Rect2i()
+		#
+		#var left: int = image.get_width()
+		#var top: int  = image.get_height()
+		#var right: int
+		#var bottom: int
+		#
+		#for x in range(image.get_width()):
+			#for y in range(image.get_height()):
+				#var color = image.get_pixel(x, y)
+				#if color.is_equal_approx(Color.WHITE):
+					#left = min( left, x )
+					#right = max( right, x )
+					#top = min( top, y )
+					#bottom = max( bottom, y )
+					#
+		#rect = Rect2i( left, top, right - left + 1, bottom - top + 1 )
+		#var cropped = Image.create( rect.size.x, rect.size.y, false, Image.FORMAT_RGBA8 )
+		#
+		#cropped.blit_rect( image, rect, Vector2i(0,0) )
+		#
+		#mask_offsets.append( Vector2i(left, top) )
+#
+		#masks[id] = cropped
+"
+
+[node name="Control" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_hjoph")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 310
+theme_override_constants/margin_top = 55
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("1_7lm4f")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/PanelContainer/ScrollContainer"]
+custom_minimum_size = Vector2(318, 277)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource("1_km3s0")
+expand_mode = 1
+script = SubResource("GDScript_dq3gp")
+
+[node name="Hover" type="TextureRect" parent="MarginContainer/PanelContainer"]
+visible = false
+custom_minimum_size = Vector2(159, 138)
+layout_mode = 2
+expand_mode = 1

@@ -51,6 +51,8 @@ func get_id_by_color( color: Color ) -> int:
 func get_id_by_position( pos: Vector2i ) -> int:
 	if pos.x >= texture.get_width() or pos.y >= texture.get_height():
 		return -1
+	if pos.x < 0 or pos.y < 0:
+		return -1
 	var color = texture.get_image().get_pixelv( pos )
 	return get_id_by_color( color )
 
