@@ -2,7 +2,10 @@ extends Resource
 class_name TerritoryData
 
 ## Name of Territory
-@export var name: StringName
+@export var name: StringName:
+	set( value ):
+		name = value
+		emit_changed()
 
 ## ID of occupying faction
 @export var factionID: int = -1

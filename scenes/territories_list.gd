@@ -27,6 +27,7 @@ func _update_list() -> void:
 	
 	var t_array = MapEditor.edited_map.territories
 	for t in t_array:
+		t.changed.connect( update_line.bind( t ) )
 		var list_item = TERRITORY_LIST_ITEM.instantiate()
 		list_item.get_node("PanelContainer/ID").text = str(t.ID)
 		list_item.get_node("PanelContainer/Name").text = t.name
@@ -34,6 +35,11 @@ func _update_list() -> void:
 		add_child(list_item)
 	pass
 	
+func update_line( territory_data: TerritoryData ) -> void:
+	#print("updating line [ " , index, " ]")
+	get_child( territory_data.ID ).get_node("PanelContainer/Name").text = territory_data.name
+	
+
 func _clear() -> void :
 	print("Clear List")
 	for node in get_children():
