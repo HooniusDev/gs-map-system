@@ -1,4 +1,6 @@
+VBoxContainer
 PanelContainer
+ItemList
 ScrollContainer
 CanvasLayer
 Camera2D
@@ -11,4 +13,3 @@ MarginContainer
 FileDialog
 PopupMenu
 MenuBar
-TabContainer

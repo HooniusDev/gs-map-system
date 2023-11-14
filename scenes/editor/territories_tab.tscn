@@ -2,7 +2,12 @@
 
 [ext_resource type="Script" path="res://scenes/territories_list.gd" id="1_ctukc"]
 
-[node name="Territories" type="VBoxContainer"]
+[node name="TerritoriesList" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_vertical = 0
-theme_override_constants/separation = 0
+theme_override_constants/separation = -1
 script = ExtResource("1_ctukc")

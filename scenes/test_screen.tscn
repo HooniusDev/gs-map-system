@@ -116,8 +116,13 @@ horizontal_alignment = 1
 
 [node name="TabContainer" type="TabContainer" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/LeftPanel"]
 layout_mode = 2
+theme_type_variation = &"TabContainerDark"
 
 [node name="Territories" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/LeftPanel/TabContainer" instance=ExtResource("5_2ong5")]
+layout_mode = 2
+
+[node name="OtherPanel" type="PanelContainer" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/LeftPanel/TabContainer"]
+visible = false
 layout_mode = 2
 
 [node name="HSplitContainer" type="HSplitContainer" parent="CanvasLayerUI/VBoxContainer/HSplitContainer"]
@@ -190,14 +195,12 @@ texture = ExtResource("10_fd200")
 script = ExtResource("7_vlro3")
 
 [node name="Visual" type="TextureRect" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/SubViewportContainer/SubViewport/CanvasLayerMap/Sprites"]
-visible = false
 layout_mode = 0
 offset_right = 320.0
 offset_bottom = 199.0
 texture = ExtResource("11_q22l7")
 
 [node name="Borders" type="TextureRect" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/SubViewportContainer/SubViewport/CanvasLayerMap/Sprites"]
-visible = false
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0

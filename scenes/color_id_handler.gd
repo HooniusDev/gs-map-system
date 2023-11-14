@@ -19,9 +19,9 @@ class_name ColorID
 @export var crest_locations: Array[Vector2i] = []
 
 func _ready() -> void:
-	#if texture:
-		#load_sprite()
-	#_on_color_id_loaded()
+	if texture:
+		_handle_sprite()
+		_on_color_id_loaded()
 	pass
 
 func load_texture( path: String ) -> void:
@@ -112,12 +112,12 @@ func crop_masks(  ) -> void:
 			for y in range(image.get_height()):
 				var color = image.get_pixel(x, y)
 				if color.is_equal_approx(Color.WHITE):
-					left = min( left, x )
-					right = max( right, x )
-					top = min( top, y )
-					bottom = max( bottom, y )
+					left = min( left, x ) -1
+					right = max( right, x ) +2
+					top = min( top, y ) -1
+					bottom = max( bottom, y ) +2
 					
-		rect = Rect2i( left, top, right - left + 1, bottom - top + 1 )
+		rect = Rect2i( left, top, right - left, bottom - top )
 		var cropped = Image.create( rect.size.x, rect.size.y, false, Image.FORMAT_RGBA8 )
 		
 		cropped.blit_rect( image, rect, Vector2i(0,0) )

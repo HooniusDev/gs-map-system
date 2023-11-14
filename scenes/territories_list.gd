@@ -9,7 +9,6 @@ const TERRITORY_LIST_ITEM = preload("res://scenes/editor/territory_list_item.tsc
 var _highlighted: int
 
 func _ready() -> void:
-	
 	MapEditor.territory_list_changed.connect(_update_list)
 	MapEditor.hover_territory_changed.connect( _highlight )
 	
@@ -28,6 +27,7 @@ func _highlight( id: int ) -> void:
 
 func _update_list() -> void:
 	
+	### only delete and add if territorydata is new instance
 	_clear()
 	
 	var t_array = MapEditor.edited_map.territories
