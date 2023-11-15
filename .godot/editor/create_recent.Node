@@ -1,5 +1,6 @@
-VBoxContainer
 PanelContainer
+GridContainer
+VBoxContainer
 ItemList
 ScrollContainer
 CanvasLayer
@@ -11,5 +12,3 @@ Marker2D
 TextureRect
 MarginContainer
 FileDialog
-PopupMenu
-MenuBar

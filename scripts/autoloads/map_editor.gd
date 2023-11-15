@@ -1,6 +1,7 @@
 extends Node
 
 signal focus_territory_changed
+
 signal hover_territory_changed
 
 signal territory_list_changed

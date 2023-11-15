@@ -49,7 +49,7 @@ func zoom_in():
 	
 func zoom_again( dir: int ) -> void:
 	var previous_mouse_position := get_local_mouse_position()
-	print (Vector2( .2 * dir, .2 * dir) )
+	#print (Vector2( .2 * dir, .2 * dir) )
 	zoom += Vector2( .2 * dir, .2 * dir) 
 	var diff = previous_mouse_position - get_local_mouse_position()
 	offset += diff

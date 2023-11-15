@@ -1,13 +1,13 @@
 [gd_scene load_steps=2 format=3 uid="uid://fscrg4xts0hv"]
 
-[ext_resource type="Script" path="res://scenes/territories_list.gd" id="1_ctukc"]
+[ext_resource type="Script" path="res://scenes/territories_list.gd" id="1_lgca6"]
 
-[node name="TerritoriesList" type="VBoxContainer"]
+[node name="TerritoriesList" type="GridContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 0
-theme_override_constants/separation = -1
-script = ExtResource("1_ctukc")
+theme_override_constants/v_separation = 0
+script = ExtResource("1_lgca6")

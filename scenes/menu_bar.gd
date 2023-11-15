@@ -12,7 +12,7 @@ func _on_sprite_menu_pressed( id: int ) -> void:
 	### TODO: Implement New Map functionality ###
 	print("sprite menu pressed: " , sprite_menu.get_item_text(id) )
 	if ( id == 0 ):
-		var file_dialog: FileDialog = $"../FileDialog" as FileDialog
+		var file_dialog: FileDialog = $"../../FileDialog" as FileDialog
 		file_dialog.popup_centered()
 		file_dialog.mode_overrides_title = false
 		file_dialog.title = "Load a Color ID Image"
@@ -23,7 +23,7 @@ func _on_sprite_menu_pressed( id: int ) -> void:
 		
 func _on_load_color_id( path: String ) -> void:
 	%ColorID.load_texture( path )
-	$"../FileDialog".file_selected.disconnect(_on_load_color_id)
+	$"../../FileDialog".file_selected.disconnect(_on_load_color_id)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

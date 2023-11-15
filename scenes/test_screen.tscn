@@ -11,7 +11,7 @@
 [ext_resource type="Script" path="res://scripts/map/hover_visualizer.gd" id="5_mplee"]
 [ext_resource type="Script" path="res://scenes/color_id_handler.gd" id="7_vlro3"]
 [ext_resource type="Texture2D" uid="uid://dlhhdwoikjg4o" path="res://assets/map_sprites/dotc/dotc_color_id.png" id="10_fd200"]
-[ext_resource type="Texture2D" uid="uid://bwdg6mioe0h2r" path="res://assets/map_sprites/dotc/dotc_map.png" id="11_q22l7"]
+[ext_resource type="Texture2D" uid="uid://vi88da6x58ry" path="res://assets/map_sprites/nas/nas_map.png" id="10_qu727"]
 [ext_resource type="Texture2D" uid="uid://c76qadg0sdn01" path="res://assets/map_sprites/dotc/dotc_borders.png" id="12_8juqc"]
 [ext_resource type="PackedScene" uid="uid://bveo17rxkm6dn" path="res://scenes/editor/bottom_panel.tscn" id="14_lp85n"]
 
@@ -59,12 +59,18 @@ mouse_filter = 2
 theme = ExtResource("1_t7tw6")
 theme_override_constants/separation = 0
 
-[node name="MenuBar" type="MenuBar" parent="CanvasLayerUI/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayerUI/VBoxContainer"]
 layout_mode = 2
+
+[node name="MenuBar" type="MenuBar" parent="CanvasLayerUI/VBoxContainer/PanelContainer"]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+size_flags_vertical = 2
 flat = true
+start_index = 0
 script = ExtResource("3_cnmq7")
 
-[node name="File" type="PopupMenu" parent="CanvasLayerUI/VBoxContainer/MenuBar"]
+[node name="File" type="PopupMenu" parent="CanvasLayerUI/VBoxContainer/PanelContainer/MenuBar"]
 item_count = 4
 item_0/text = "New Map"
 item_0/id = 0
@@ -75,7 +81,7 @@ item_2/id = 2
 item_3/text = "Save as.."
 item_3/id = 3
 
-[node name="Sprite" type="PopupMenu" parent="CanvasLayerUI/VBoxContainer/MenuBar"]
+[node name="Sprite" type="PopupMenu" parent="CanvasLayerUI/VBoxContainer/PanelContainer/MenuBar"]
 item_count = 3
 item_0/text = "Load ColorID"
 item_0/id = 0
@@ -179,28 +185,31 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_bottom = -23.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_horizontal = 2
+size_flags_vertical = 2
 mouse_filter = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="ColorID" type="TextureRect" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/SubViewportContainer/SubViewport/CanvasLayerMap/Sprites"]
 unique_name_in_owner = true
 layout_mode = 0
-offset_right = 320.0
-offset_bottom = 199.0
+offset_right = 318.0
+offset_bottom = 277.0
 texture = ExtResource("10_fd200")
 script = ExtResource("7_vlro3")
 
 [node name="Visual" type="TextureRect" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/SubViewportContainer/SubViewport/CanvasLayerMap/Sprites"]
+visible = false
 layout_mode = 0
 offset_right = 320.0
 offset_bottom = 199.0
-texture = ExtResource("11_q22l7")
+texture = ExtResource("10_qu727")
 
 [node name="Borders" type="TextureRect" parent="CanvasLayerUI/VBoxContainer/HSplitContainer/HSplitContainer/PanelContainer/VSplitContainer/MarginContainer/MapView/SubViewportContainer/SubViewport/CanvasLayerMap/Sprites"]
+visible = false
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0

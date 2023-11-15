@@ -29,4 +29,5 @@ class_name TerritoryData
 ## Color used for highlights
 @export var _mask: Image
 	
-
+func get_id_as_string() -> String:
+	return str(ID)

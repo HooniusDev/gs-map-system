@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://5bfvrnix2tsn"]
+[gd_scene load_steps=4 format=3 uid="uid://5bfvrnix2tsn"]
 
 [ext_resource type="Theme" uid="uid://brunryg3jh5er" path="res://addons/generic_pixel_ui/generic_pixel_ui.theme" id="1_0gx1w"]
+[ext_resource type="Script" path="res://scripts/editor_gui/territory_list_item.gd" id="2_ecra6"]
 [ext_resource type="StyleBox" uid="uid://dnh78acqp1a55" path="res://addons/generic_pixel_ui/stylebox/panels/panel_container_focus_square.tres" id="2_h42bn"]
 
 [node name="territory_list_item" type="PanelContainer"]
@@ -8,10 +9,12 @@ offset_right = 394.0
 offset_bottom = 13.0
 size_flags_vertical = 4
 theme = ExtResource("1_0gx1w")
+script = ExtResource("2_ecra6")
 
 [node name="PanelContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 4
+mouse_filter = 2
 
 [node name="ID" type="Label" parent="PanelContainer"]
 custom_minimum_size = Vector2(12.145, 0)
@@ -23,6 +26,7 @@ horizontal_alignment = 1
 [node name="Name" type="LineEdit" parent="PanelContainer"]
 custom_minimum_size = Vector2(106.115, 0)
 layout_mode = 2
+mouse_filter = 1
 mouse_default_cursor_shape = 0
 text = "TerritoryName"
 max_length = 18
@@ -31,6 +35,7 @@ max_length = 18
 custom_minimum_size = Vector2(5, 5)
 layout_mode = 2
 size_flags_vertical = 4
+mouse_filter = 2
 
 [node name="Highlight" type="PanelContainer" parent="."]
 visible = false
