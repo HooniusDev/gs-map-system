@@ -14,9 +14,9 @@ class_name ColorID
 @export var file_path: StringName = ""
 @export var colors: Array[Color] = []
 @export var masks: Array[Image] = []
-@export var mask_offsets: Array[Vector2i] = []
+@export var mask_offsets: Array[Vector2] = []
 
-@export var crest_locations: Array[Vector2i] = []
+@export var crest_locations: Array[Vector2] = []
 
 func _ready() -> void:
 	if texture:
@@ -39,16 +39,6 @@ func _on_color_id_loaded():
 	#size = texture.get_size()
 	#get_parent().size = texture.get_size()
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		#if get_rect().has_point(to_local(event.position)):
-		var local = event.position
-		var mouse_loc = get_local_mouse_position()
-		var id = get_id_by_position( mouse_loc + texture.get_size() / 2.0 )
-		MapEditor.hover_territory_changed.emit(id)
-		print("A click!", mouse_loc )
-
-
 func _handle_sprite( ) -> void:
 	## all kinds of check here!
 	### Should we create all new or just update data ###
@@ -61,12 +51,14 @@ func get_id_by_color( color: Color ) -> int:
 			return id
 	return -1
 
-func get_id_by_position( pos: Vector2i ) -> int:
-	#if pos.x >= texture.get_width() or pos.y >= texture.get_height():
-		#return -1
-	#if pos.x < 0 or pos.y < 0:
-		#return -1
-	var color = texture.get_image().get_pixelv( pos )
+func get_id_by_position( pos: Vector2 ) -> int:
+	var local: = pos + texture.get_size() / 2.0
+	print("local: ", local)
+	var rect = Rect2i( Vector2i(0,0), texture.get_size() )
+	if not rect.has_point(local):
+		printerr(" out ! ", local)
+		return -1
+	var color = texture.get_image().get_pixelv( local )
 	return get_id_by_color( color )
 
 func set_sprite_to_territory( index: int, sprite: Sprite2D ) -> void:
@@ -74,7 +66,7 @@ func set_sprite_to_territory( index: int, sprite: Sprite2D ) -> void:
 		print("Set Sprite failed due to oveflow ", index)
 		return
 	sprite.texture = ImageTexture.create_from_image( masks[index] )
-	sprite.position = mask_offsets[index] - Vector2i( texture.get_size() * .5 )
+	sprite.position = mask_offsets[index] - texture.get_size() * .5
 
 ### BUG 
 ### On DotC map masks are a bit off
@@ -98,7 +90,7 @@ func create_masks( ) -> void:
 			if color.is_equal_approx( "ff0000" ):
 				# get pixel right to this
 				color = source.get_pixel( x+1, y )
-				crest_locations.append( Vector2i(x,y) )
+				crest_locations.append( Vector2(x,y) )
 			var id = get_id_by_color( color )
 			# this is already in colors
 			if id > -1:
@@ -117,7 +109,7 @@ func crop_masks(  ) -> void:
 		
 		var image = masks[id]
 		# based on image white pixels crop
-		var target_rect: Rect2i = Rect2i()
+		var target_rect: Rect2 = Rect2i()
 		var source_rect: Rect2i = Rect2i()
 		
 		var left: int = image.get_width()

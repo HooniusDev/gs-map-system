@@ -14,7 +14,7 @@ func _ready() -> void:
 	MapEditor.color_id_changed.connect( _color_id_changed )
 
 func _on_hover_territory_changed(id: int):
-	%ColorID.set_sprite_to_territory(id, self)
+	$"../ColorID".set_sprite_to_territory(id, self)
 	if hidden:
 		show()
 #func set_to( _position: Vector2i, _texture: Texture ) -> void

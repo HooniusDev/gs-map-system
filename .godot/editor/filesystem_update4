@@ -1,5 +1,5 @@
-res://scripts/project.gd
-res://scenes/editor/map.tscn
+res://scripts/editor_map_input.gd
+res://scenes/test_screen.tscn
 res://addons/generic_pixel_ui/stylebox/panels/panel_square_dark.stylebox
 res://addons/generic_pixel_ui/stylebox/tab/dark/tab_disabled_dark.stylebox
 res://addons/generic_pixel_ui/stylebox/tab/dark/tab_hovered_dark.stylebox
@@ -10,10 +10,10 @@ res://addons/generic_pixel_ui/stylebox/panels/panel_container_focus_square.tres
 res://assets/shaders/outline_2.gdshader
 res://assets/shaders/outline.gdshader
 res://assets/shaders/selected_outline.gdshader
-res://scenes/test_screen.tscn
 res://scenes/editor/bottom_panel.tscn
 res://scenes/editor/territories_tab.tscn
 res://scenes/editor/territory_list_item.tscn
+res://scenes/editor/map.tscn
+res://scenes/editor/map_editor_scene.tscn
 res://scenes/color_id_handler.gd
-res://scenes/editor_camera.gd
-res://scripts/map/pixel_map.gd
+res://scripts/map/hover_visualizer.gd
