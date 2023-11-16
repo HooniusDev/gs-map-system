@@ -3,8 +3,8 @@ extends Camera2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	%ZoomOut.pressed.connect(zoom_out)
-	%ZoomIn.pressed.connect(zoom_in)
+	#%ZoomOut.pressed.connect(zoom_out)
+	#%ZoomIn.pressed.connect(zoom_in)
 	pass # Replace with function body.
 
 func _unhandled_input(event: InputEvent) -> void:

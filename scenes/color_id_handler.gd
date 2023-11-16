@@ -1,4 +1,4 @@
-extends TextureRect
+extends Sprite2D
 class_name ColorID
 
 ### This node needs to update info about color_id image
@@ -35,9 +35,18 @@ func load_texture( path: String ) -> void:
 
 func _on_color_id_loaded():
 	MapEditor.color_id_changed.emit()
-	print( "size: " , size , " to:" , texture.get_size() )
-	size = texture.get_size()
-	get_parent().size = texture.get_size()
+	#print( "size: " , size , " to:" , texture.get_size() )
+	#size = texture.get_size()
+	#get_parent().size = texture.get_size()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		#if get_rect().has_point(to_local(event.position)):
+		var local = event.position
+		var mouse_loc = get_local_mouse_position()
+		var id = get_id_by_position( mouse_loc + texture.get_size() / 2.0 )
+		MapEditor.hover_territory_changed.emit(id)
+		print("A click!", mouse_loc )
 
 
 func _handle_sprite( ) -> void:
@@ -53,10 +62,10 @@ func get_id_by_color( color: Color ) -> int:
 	return -1
 
 func get_id_by_position( pos: Vector2i ) -> int:
-	if pos.x >= texture.get_width() or pos.y >= texture.get_height():
-		return -1
-	if pos.x < 0 or pos.y < 0:
-		return -1
+	#if pos.x >= texture.get_width() or pos.y >= texture.get_height():
+		#return -1
+	#if pos.x < 0 or pos.y < 0:
+		#return -1
 	var color = texture.get_image().get_pixelv( pos )
 	return get_id_by_color( color )
 
@@ -65,7 +74,7 @@ func set_sprite_to_territory( index: int, sprite: Sprite2D ) -> void:
 		print("Set Sprite failed due to oveflow ", index)
 		return
 	sprite.texture = ImageTexture.create_from_image( masks[index] )
-	sprite.position = mask_offsets[index] + Vector2i( position )
+	sprite.position = mask_offsets[index] - Vector2i( texture.get_size() * .5 )
 
 ### BUG 
 ### On DotC map masks are a bit off
@@ -147,6 +156,6 @@ func crop_masks(  ) -> void:
 		cropped.blit_rect( image, target_rect, Vector2i(0,0) )
 		
 		### BUG: these get missed by a pixel?
-		mask_offsets.append( Vector2i(target_rect.position.x, target_rect.position.y) )
+		mask_offsets.append( target_rect.get_center() )
 
 		masks[id] = cropped
