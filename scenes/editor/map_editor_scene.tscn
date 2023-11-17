@@ -1,13 +1,27 @@
-[gd_scene load_steps=11 format=3 uid="uid://b20wsxp2aw2mb"]
+[gd_scene load_steps=17 format=3 uid="uid://b20wsxp2aw2mb"]
 
+[ext_resource type="Theme" uid="uid://brunryg3jh5er" path="res://addons/generic_pixel_ui/generic_pixel_ui.theme" id="1_gb760"]
 [ext_resource type="Texture2D" uid="uid://dvkeqo38xo7bv" path="res://assets/map_sprites/nas/nas-colorid.png" id="1_mqcpo"]
-[ext_resource type="Script" path="res://scenes/color_id_handler.gd" id="2_2kkfv"]
+[ext_resource type="Script" path="res://scripts/editor/color_id_handler.gd" id="2_2kkfv"]
 [ext_resource type="Texture2D" uid="uid://vi88da6x58ry" path="res://assets/map_sprites/nas/nas_map.png" id="2_kqbgt"]
+[ext_resource type="Script" path="res://scripts/editor/menu_bar.gd" id="2_ygm2v"]
+[ext_resource type="Texture2D" uid="uid://crojbl7l5jp3v" path="res://addons/generic_pixel_ui/sprites/gdp_ui_styles_rearrange.png" id="3_0p6di"]
 [ext_resource type="Texture2D" uid="uid://bpu2oscnu4rar" path="res://assets/map_sprites/nas/nas_borders.png" id="3_a1c7v"]
+[ext_resource type="PackedScene" uid="uid://fscrg4xts0hv" path="res://scenes/editor/territories_tab.tscn" id="4_dqvbc"]
 [ext_resource type="Script" path="res://scripts/editor_map_input.gd" id="4_un48s"]
-[ext_resource type="Script" path="res://scenes/editor_camera.gd" id="5_0y1ts"]
+[ext_resource type="Script" path="res://scripts/editor/editor_camera.gd" id="5_0y1ts"]
+[ext_resource type="Script" path="res://scripts/map/map.gd" id="5_elfh3"]
 [ext_resource type="Shader" path="res://assets/shaders/outline_2.gdshader" id="5_iegh4"]
 [ext_resource type="Script" path="res://scripts/map/hover_visualizer.gd" id="6_f0g1k"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mhjhn"]
+resource_local_to_scene = true
+texture = ExtResource("3_0p6di")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+region_rect = Rect2(1, 21, 9, 9)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_j5ljp"]
 shader = ExtResource("5_iegh4")
@@ -17,35 +31,133 @@ shader_parameter/fill_color = Color(1, 1, 1, 0.360784)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2hfp7"]
 size = Vector2(320, 199)
 
-[node name="Map" type="Node2D"]
+[node name="MapEditorManager" type="PanelContainer"]
+theme = ExtResource("1_gb760")
 
-[node name="Territories" type="Node2D" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="HereBeTerritoryNodes" type="Node2D" parent="Territories"]
+[node name="MainView" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("1_gb760")
+theme_override_constants/separation = 0
 
-[node name="Images" type="Node2D" parent="."]
+[node name="MenuContainer" type="PanelContainer" parent="CanvasLayer/MainView"]
+layout_mode = 2
+size_flags_vertical = 0
 
-[node name="ColorID" type="Sprite2D" parent="Images"]
+[node name="MenuBar" type="MenuBar" parent="CanvasLayer/MainView/MenuContainer"]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+size_flags_vertical = 2
+flat = true
+start_index = 0
+script = ExtResource("2_ygm2v")
+
+[node name="File" type="PopupMenu" parent="CanvasLayer/MainView/MenuContainer/MenuBar"]
+item_count = 4
+item_0/text = "New Map"
+item_0/id = 0
+item_1/text = "Load Map"
+item_1/id = 1
+item_2/text = "Save"
+item_2/id = 2
+item_3/text = "Save as.."
+item_3/id = 3
+
+[node name="Sprite" type="PopupMenu" parent="CanvasLayer/MainView/MenuContainer/MenuBar"]
+item_count = 3
+item_0/text = "Load ColorID"
+item_0/id = 0
+item_1/text = "Load Background"
+item_1/id = 1
+item_2/text = "Load Borders"
+item_2/id = 2
+
+[node name="ToolBar" type="PanelContainer" parent="CanvasLayer/MainView"]
+layout_mode = 2
+size_flags_vertical = 0
+theme = ExtResource("1_gb760")
+theme_override_styles/panel = SubResource("StyleBoxTexture_mhjhn")
+
+[node name="Label" type="Label" parent="CanvasLayer/MainView/ToolBar"]
+layout_mode = 2
+text = "ToolBar"
+horizontal_alignment = 1
+
+[node name="LeftPanel" type="PanelContainer" parent="CanvasLayer"]
+custom_minimum_size = Vector2(0, 100)
+offset_left = 3.0
+offset_top = 36.0
+offset_right = 148.0
+offset_bottom = 357.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_gb760")
+metadata/_edit_group_ = true
+
+[node name="PanelIdentifier" type="Label" parent="CanvasLayer/LeftPanel"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "Bottom
+"
+horizontal_alignment = 1
+
+[node name="TabContainer" type="TabContainer" parent="CanvasLayer/LeftPanel"]
+layout_mode = 2
+theme_type_variation = &"TabContainerDark"
+
+[node name="Territories" parent="CanvasLayer/LeftPanel/TabContainer" instance=ExtResource("4_dqvbc")]
+layout_mode = 2
+
+[node name="OtherPanel" type="PanelContainer" parent="CanvasLayer/LeftPanel/TabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="FileDialog" type="FileDialog" parent="CanvasLayer"]
+unique_name_in_owner = true
+title = "Load ColorID"
+initial_position = 1
+size = Vector2i(392, 159)
+theme = ExtResource("1_gb760")
+
+[node name="Map" type="Node2D" parent="."]
+position = Vector2(318, 180)
+script = ExtResource("5_elfh3")
+
+[node name="Territories" type="Node2D" parent="Map"]
+
+[node name="HereBeTerritoryNodes" type="Node2D" parent="Map/Territories"]
+
+[node name="Images" type="Node2D" parent="Map"]
+
+[node name="ColorID" type="Sprite2D" parent="Map/Images"]
 texture = ExtResource("1_mqcpo")
 script = ExtResource("2_2kkfv")
 
-[node name="Graphics" type="Sprite2D" parent="Images"]
+[node name="Background" type="Sprite2D" parent="Map/Images"]
 texture = ExtResource("2_kqbgt")
 
-[node name="Borders" type="Sprite2D" parent="Images"]
+[node name="Borders" type="Sprite2D" parent="Map/Images"]
 texture = ExtResource("3_a1c7v")
 
-[node name="HoverVisualizer" type="Sprite2D" parent="Images"]
+[node name="HoverVisualizer" type="Sprite2D" parent="Map/Images"]
 z_index = 100
 material = SubResource("ShaderMaterial_j5ljp")
 script = ExtResource("6_f0g1k")
 
-[node name="EditorInput" type="Area2D" parent="."]
+[node name="EditorMapInput" type="Area2D" parent="Map"]
 script = ExtResource("4_un48s")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="EditorInput"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/EditorMapInput"]
 position = Vector2(-0.5, -0.25)
 shape = SubResource("RectangleShape2D_2hfp7")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="Map"]
+position = Vector2(-101, 0)
 script = ExtResource("5_0y1ts")

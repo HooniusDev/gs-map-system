@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://fscrg4xts0hv"]
 
-[ext_resource type="Script" path="res://scenes/territories_list.gd" id="1_lgca6"]
+[ext_resource type="Script" path="res://scripts/editor/territories_list.gd" id="1_lgca6"]
 
 [node name="TerritoriesList" type="GridContainer"]
 anchors_preset = 15

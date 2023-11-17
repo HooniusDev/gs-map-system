@@ -2,7 +2,7 @@
 
 [ext_resource type="StyleBox" uid="uid://c8wt5uxba6pus" path="res://addons/generic_pixel_ui/stylebox/panels/panel_square_dark.stylebox" id="1_8vbbw"]
 [ext_resource type="Theme" uid="uid://brunryg3jh5er" path="res://addons/generic_pixel_ui/generic_pixel_ui.theme" id="1_u03e2"]
-[ext_resource type="Script" path="res://scenes/editor/bottom_panel.gd" id="3_eyrnq"]
+[ext_resource type="Script" path="res://scripts/editor/bottom_panel.gd" id="3_eyrnq"]
 
 [node name="BottomPanel" type="PanelContainer"]
 custom_minimum_size = Vector2(0, 30)

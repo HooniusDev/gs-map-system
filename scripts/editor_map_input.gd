@@ -11,6 +11,7 @@ var focus_id: int = -1
 
 func _ready() -> void:
 	input_event.connect( on_input_event )
+	
 	pass
 
 func on_input_event(viewport: Viewport, event: InputEvent, shape_idx: int) -> void:
