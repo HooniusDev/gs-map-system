@@ -9,7 +9,7 @@ const TERRITORY_LIST_ITEM = preload("res://scenes/editor/territory_list_item.tsc
 #var _highlighted: int
 #
 func _ready() -> void:
-	MapEditor.territory_list_changed.connect(_update_list)
+	MapEditorEvents.territory_list_changed.connect(_update_list)
 	#MapEditor.hover_territory_changed.connect( _highlight )
 	#
 #
@@ -30,15 +30,19 @@ func _update_list() -> void:
 	### only delete and add if territorydata is new instance
 	_clear()
 	
-	var t_array = MapEditor.edited_map.territories
+	
+	
+	var t_array = Globals.Manager.map.territories.get_children()
 	for t in t_array:
 		#t.changed.connect( update_line.bind( t ) )
 		var list_item = TERRITORY_LIST_ITEM.instantiate() as TerritoryListItem
 		#list_item.mouse_entered.connect( _on_list_item_hover.bind( t.ID ) )
 		add_child(list_item)
-		list_item.link_to_territory( t )
+		list_item.name = str(t.id)
+		list_item.link_to_territory( t.data )
 		#update_line(t)
-	pass
+		
+	print("Updating territories list: ", get_child_count())
 	
 #func _on_list_item_hover( id:int ) -> void :
 	#MapEditor.hover_territory_changed.emit( id )
@@ -58,8 +62,8 @@ func _rename_territory( name: String, territory_data: TerritoryData ) -> void:
 	territory_data.name = name
 
 func _clear() -> void :
-	print("Clear List")
+	print("Clearing territories List")
 	for node in get_children():
-		#remove_child(node)
+		remove_child(node)
 		node.queue_free()
 

@@ -37,9 +37,6 @@ func load_texture( path: String ) -> bool:
 
 func _on_color_id_loaded():
 	MapEditorEvents.color_id_texture_changed.emit()
-	#print( "size: " , size , " to:" , texture.get_size() )
-	#size = texture.get_size()
-	#get_parent().size = texture.get_size()
 
 func _handle_sprite( ) -> void:
 	## all kinds of check here!

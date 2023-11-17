@@ -33,7 +33,7 @@ func on_input_event(viewport: Viewport, event: InputEvent, shape_idx: int) -> vo
 		#var territory = map_manager.get_territory_by_id(selected_territory_id)
 		
 		# TODO emit this for Global editor state to emit lost_focus on old one
-		MapEditor.focus_territory_changed.emit(focus_id) #
+		MapEditorEvents.focus_territory_changed.emit(focus_id) #
 		
 		## Faction 0 gets to conquer the territory for now
 		#$Factions.accuire_territory( 0, territory )
@@ -41,6 +41,8 @@ func on_input_event(viewport: Viewport, event: InputEvent, shape_idx: int) -> vo
 		
 	if event is InputEventMouseMotion:
 		
+		if not $"../Images/ColorID".texture:
+			return
 		var territory_id = $"../Images/ColorID".get_id_by_position( mouse_pos )
 		#print(territory_id)
 #
@@ -52,5 +54,5 @@ func on_input_event(viewport: Viewport, event: InputEvent, shape_idx: int) -> vo
 		if territory_id != hover_id:
 			
 			hover_id = territory_id
-			MapEditor.hover_territory_changed.emit(hover_id)
+			MapEditorEvents.hover_territory_changed.emit(hover_id)
 			$"../Images/ColorID".set_sprite_to_territory( hover_id, $"../Images/HoverVisualizer" )

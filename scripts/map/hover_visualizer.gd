@@ -10,8 +10,8 @@ extends Sprite2D
 
 
 func _ready() -> void:
-	MapEditor.hover_territory_changed.connect(_on_hover_territory_changed)
-	MapEditor.color_id_changed.connect( _color_id_changed )
+	MapEditorEvents.hover_territory_changed.connect(_on_hover_territory_changed)
+	MapEditorEvents.color_id_texture_changed.connect( _color_id_changed )
 
 func _on_hover_territory_changed(id: int):
 	$"../ColorID".set_sprite_to_territory(id, self)

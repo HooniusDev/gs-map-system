@@ -19,6 +19,8 @@ class_name TerritoryData
 ## ColorID 
 @export var colorID: Color
 
+@export var crest_position: Vector2i
+
 ### Can I Dynamically add properties to Resources? ###
 # Vassals gained when first Conquered
 @export var vassals: int

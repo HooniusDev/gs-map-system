@@ -1,8 +1,10 @@
+ConfirmationDialog
+Control
+Node
 FileDialog
 CanvasLayer
 PanelContainer
 Node2D
-Node
 CollisionShape2D
 Area2D
 Sprite2D
@@ -11,5 +13,3 @@ VBoxContainer
 ItemList
 ScrollContainer
 Camera2D
-SubViewport
-SubViewportContainer

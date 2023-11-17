@@ -10,7 +10,7 @@ var _id: int = -1
 func link_to_territory( data: TerritoryData ) -> void: 
 	_id = data.ID
 	data.changed.connect( _on_data_changed.bind( data ) )
-	MapEditor.hover_territory_changed.connect( _on_hover_territory_changed )
+	MapEditorEvents.hover_territory_changed.connect( _on_hover_territory_changed )
 	_update( data )
 	mouse_entered.connect( _on_mouse_enter )
 	mouse_exited.connect( _on_mouse_exit )
@@ -28,7 +28,7 @@ func _on_mouse_enter() -> void:
 	#print( "Mouse enter: ", _id )
 	$Highlight.show()
 	## Highlights territory on map view
-	MapEditor.hover_territory_changed.emit(_id)
+	MapEditorEvents.hover_territory_changed.emit(_id)
 
 func _on_mouse_exit() -> void:
 	#print( "Mouse exit: ", _id )
