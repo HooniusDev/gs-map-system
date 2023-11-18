@@ -39,11 +39,13 @@ class_name ImageSplitter
 ## Save PNG's
 @export var save_png: bool = false
 @export_category("Clear")
-## Run the script to split images
+## Clear Nodes from Output and Empty Arrays
 @export var clear_all: bool = false
+
 
 func _clear_all() -> void:
 	var output = $Output
+	var inputs = $Inputs
 	colors = []
 	masks = []
 	backgrounds = []
@@ -51,7 +53,7 @@ func _clear_all() -> void:
 	crest_locations =[]
 	for node in output.get_children():
 		node.queue_free()
-	for node in output.get_children():
+	for node in inputs.get_children():
 		node.queue_free()
 		
 func _save_pngs() -> void:
@@ -86,18 +88,10 @@ func _save_pngs() -> void:
 		
 		if backgrounds.size() >= i:
 			var png: Image = backgrounds[i]
-			png.save_png( save_path + "background_" + str(i) + ".png" )
+			png.save_png( save_path + "bg_" + node.name + ".png" )
 		if masks.size() >= i:
 			var png: Image = masks[i]
-			png.save_png( save_path + "mask_" + str(i) + ".png" )
-	#for i in backgrounds.size():
-		#var png: Image = backgrounds[i]
-		#png.save_png( save_folder + "background_" + str(i) + ".png" )
-	#for i in masks.size():
-		#var png: Image = masks[i]
-		#png.save_png( save_folder + "mask_" + str(i) + ".png" )
-
-	
+			png.save_png( save_path + "mask_" + node.name + ".png" )
 
 
 func _process(delta: float) -> void:
@@ -105,11 +99,9 @@ func _process(delta: float) -> void:
 		if split_images and is_instance_valid( color_id_texture ) and is_instance_valid( background_texture ):
 			create_masks()
 			crop_masks()
-			print("images_split")
 			split_images = false
 			if create_nodes:
 				_create_nodes()
-				print("created_nodes")
 		if clear_all:
 			_clear_all()
 			clear_all = false
@@ -167,10 +159,15 @@ func _create_nodes() -> void:
 
 
 func get_id_by_color( color: Color ) -> int:
+	if color.is_equal_approx(Color.TRANSPARENT):
+		return -1
 	for id in colors.size():
 		if colors[id].is_equal_approx(color):
 			return id
 	return -1
+
+### TODO:
+### Extend background image by one pixel
 
 ## Creates masks per color, size of the color_id texture 
 func create_masks( ) -> void:
@@ -181,8 +178,11 @@ func create_masks( ) -> void:
 	
 	# load the ColorID image
 	var source = color_id_texture.get_image()
+	var bg_image = background_texture.get_image()
+	
 	if not is_instance_valid(source):
 		printerr("Texture is shit!")
+		
 	for y in source.get_height():
 		for x in source.get_width():
 			var color = source.get_pixel( x, y )
@@ -208,7 +208,31 @@ func create_masks( ) -> void:
 				var bg_pixel = background_texture.get_image().get_pixel( x, y )
 				backgrounds[id].set_pixel(x,y, bg_pixel)
 				colors.append(color)
+	
+	# Do a second pass to add transparent pixels border pixels to bg's
+	for y in source.get_height():
+		for x in source.get_width():
+			var color = source.get_pixel( x, y )
+			if color.is_equal_approx(Color.TRANSPARENT):
+				return
+			if x > 0: # left
+				var id = get_id_by_color( source.get_pixel( x - 1, y ) )
+				if id != -1: # There is a color
+					backgrounds[id].set_pixel(x,y, bg_image.get_pixel( x - 1, y))
+			if x < source.get_width() - 1: #right
+				var id = get_id_by_color( source.get_pixel( x + 1, y ) )
+				if id != -1: # There is a color
+					backgrounds[id].set_pixel(x,y, bg_image.get_pixel( x + 1, y))
+			if y > 0: # up
+				var id = get_id_by_color( source.get_pixel( x, y - 1 ) )
+				if id != -1: # There is a color
+					backgrounds[id].set_pixel(x,y, bg_image.get_pixel( x, y - 1))
+			if y < source.get_height() - 1: # down
+				var id = get_id_by_color( source.get_pixel( x, y + 1 ) )
+				if id != -1: # There is a color
+					backgrounds[id].set_pixel(x,y, bg_image.get_pixel( x, y + 1))
 
+				
 ## Crops masks to white pixels + 1 radius
 func crop_masks(  ) -> void:
 	## TODO: 
@@ -234,8 +258,6 @@ func crop_masks(  ) -> void:
 					top = min( top, y )
 					bottom = max( bottom, y )
 		
-		# I bet there's a way to do this simpler but this is what ChatGPT told me 
-		
 		# expand the rect by 1 pixel to all directions
 		left = max(0, left - 1) # Clamp at 0
 		top = max(0, top - 1) # Clamp at 0
@@ -246,7 +268,6 @@ func crop_masks(  ) -> void:
 		var height = bottom - top
 		
 		var target_rect = Rect2( left, top, width, height )
-		print( "rect: ", target_rect )
 		
 		# MASK
 		var cropped = Image.create( width, height, false, Image.FORMAT_RGBA8 )
