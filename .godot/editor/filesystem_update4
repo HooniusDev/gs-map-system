@@ -6,9 +6,7 @@ res://addons/generic_pixel_ui/stylebox/tab/dark/tab_selected_dark.stylebox
 res://addons/generic_pixel_ui/stylebox/tab/dark/tab_unselected_dark.stylebox
 res://addons/generic_pixel_ui/generic_pixel_ui.theme
 res://addons/generic_pixel_ui/stylebox/panels/panel_container_focus_square.tres
-res://assets/shaders/outline_2.gdshader
 res://assets/shaders/outline.gdshader
+res://assets/shaders/outline_2.gdshader
 res://assets/shaders/selected_outline.gdshader
 res://scenes/editor/image_splitter.gd
-res://scenes/editor/map_editor_scene.tscn
-res://scenes/editor/territories_tab.tscn

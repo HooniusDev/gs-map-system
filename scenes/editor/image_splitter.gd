@@ -11,9 +11,13 @@ class_name ImageSplitter
 		color_id_texture = texture
 		if color_id_texture:
 			save_folder = color_id_texture.resource_path.get_base_dir() + "/split/"
+		update_configuration_warnings()
 		
 ## The artsy image of the map
-@export var background_texture: Texture2D
+@export var background_texture: Texture2D:
+	set ( texture ):
+		background_texture = texture
+		update_configuration_warnings()
 
 @export_category("Outputs")
 ## Colors in order that they are discovered from color_id image
@@ -157,7 +161,6 @@ func _create_nodes() -> void:
 	bg.owner = get_tree().edited_scene_root
 		
 
-
 func get_id_by_color( color: Color ) -> int:
 	if color.is_equal_approx(Color.TRANSPARENT):
 		return -1
@@ -165,9 +168,6 @@ func get_id_by_color( color: Color ) -> int:
 		if colors[id].is_equal_approx(color):
 			return id
 	return -1
-
-### TODO:
-### Extend background image by one pixel
 
 ## Creates masks per color, size of the color_id texture 
 func create_masks( ) -> void:
@@ -282,5 +282,15 @@ func crop_masks(  ) -> void:
 		
 		mask_offsets.append( target_rect.get_center() - Vector2(image.get_width() * .5, image.get_height() * .5 ) )
 
+func _get_configuration_warnings():
+	var warnings = []
 
+	if !color_id_texture:
+		warnings.append("Color ID Texture is Required")
+	
+	if !background_texture:
+		warnings.append("Background Texture is Required")
+
+	# Returning an empty array means "no warning".
+	return warnings
 
