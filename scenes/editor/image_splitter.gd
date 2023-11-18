@@ -29,6 +29,8 @@ class_name ImageSplitter
 @export var split_images: bool = false
 ## Builds nodes from the output
 @export var create_nodes: bool = true
+## Save PNG's
+@export var save_png: bool = false
 @export_category("Clear")
 ## Run the script to split images
 @export var clear_all: bool = false
@@ -41,6 +43,10 @@ func _clear_all() -> void:
 	crest_locations =[]
 	for node in $Output.get_children():
 		node.queue_free()
+		
+func _save_pngs() -> void:
+	var png: Image = backgrounds[1]
+	png.save_png( "res://assets/map_sprites/dotc/split/" )
 
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
@@ -55,6 +61,9 @@ func _process(delta: float) -> void:
 		if clear_all:
 			_clear_all()
 			clear_all = false
+		if save_png:
+			_save_pngs()
+			save_png = false
 		
 func _create_nodes() -> void:
 	var output: Node2D = $Output
@@ -80,8 +89,11 @@ func _create_nodes() -> void:
 		color_node.add_child( bg_node )
 		bg_node.owner = get_tree().edited_scene_root
 		
-		mask_node.texture = mask.duplicate()
-		bg_node.texture = background.duplicate()
+		mask.resource_local_to_scene = true
+		background.resource_local_to_scene = true
+		
+		mask_node.texture = ImageTexture.create_from_image( mask )
+		bg_node.texture = ImageTexture.create_from_image( background )
 		
 		color_node.position = mask_offset
 		
@@ -179,6 +191,7 @@ func crop_masks(  ) -> void:
 		cropped.blit_rect( image, target_rect, Vector2i(0,0) )
 		masks[id] = cropped
 		
+		# TODO: Need include mask +1 pixels
 		# BG
 		var cropped_bg = Image.create( target_rect.size.x, target_rect.size.y, false, Image.FORMAT_RGBA8 )
 		cropped_bg.blit_rect( backgrounds[id], target_rect, Vector2i(0,0) )

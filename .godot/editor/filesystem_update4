@@ -1,4 +1,3 @@
-res://scenes/editor/image_splitter.gd
 res://scenes/experimental/split_images.tscn
 res://addons/generic_pixel_ui/stylebox/panels/panel_square_dark.stylebox
 res://addons/generic_pixel_ui/stylebox/tab/dark/tab_disabled_dark.stylebox
@@ -10,3 +9,4 @@ res://addons/generic_pixel_ui/stylebox/panels/panel_container_focus_square.tres
 res://assets/shaders/outline_2.gdshader
 res://assets/shaders/outline.gdshader
 res://assets/shaders/selected_outline.gdshader
+res://scenes/editor/image_splitter.gd
