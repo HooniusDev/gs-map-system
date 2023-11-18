@@ -22,8 +22,8 @@ class_name PixelMap
 
 func _ready() -> void:
 	#bounds = Rect2i( 0,0, color_id_image.get_size().x, color_id_image.get_size().y )
-	MapEditor.edited_map = self
-	MapEditor.color_id_changed.connect( _update_territories )
+	Globals.edited_map = self
+	MapEditorEvents.color_id_changed.connect( _update_territories )
 	
 func _update_territories() -> void:
 	print(" _update_territories ")
@@ -36,7 +36,7 @@ func _update_territories() -> void:
 			territory_data.ID = i
 			territory_data.name = "territory_" + str(i)
 			territories.append( territory_data )
-	MapEditor.territory_list_changed.emit()
+	MapEditorEvents.territory_list_changed.emit()
 	
 
 #func _input_event(viewport: Viewport, event: InputEvent, shape_idx: int) -> void:

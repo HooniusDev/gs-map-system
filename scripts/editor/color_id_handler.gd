@@ -14,6 +14,7 @@ class_name ColorID
 @export var file_path: StringName = ""
 @export var colors: Array[Color] = []
 @export var masks: Array[Image] = []
+@export var background: Array[Image] = []
 @export var mask_offsets: Array[Vector2] = []
 
 @export var crest_locations: Array[Vector2] = []
