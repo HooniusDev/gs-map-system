@@ -1,5 +1,6 @@
-Sprite2D
 Node2D
+ColorRect
+Sprite2D
 HBoxContainer
 VBoxContainer
 Label
@@ -11,5 +12,3 @@ Control
 Node
 FileDialog
 CanvasLayer
-CollisionShape2D
-Area2D

@@ -6,7 +6,12 @@ class_name ImageSplitter
 
 #@export_category("Inputs")
 ## Texture that is used to split all textures
-@export var color_id_texture: Texture2D
+@export var color_id_texture: Texture2D:
+	set ( texture ):
+		color_id_texture = texture
+		if color_id_texture:
+			save_folder = color_id_texture.resource_path.get_base_dir() + "/split/"
+		
 ## The artsy image of the map
 @export var background_texture: Texture2D
 
@@ -29,6 +34,8 @@ class_name ImageSplitter
 @export var split_images: bool = false
 ## Builds nodes from the output
 @export var create_nodes: bool = true
+## Save folder for PNG's
+@export var save_folder: String = ""
 ## Save PNG's
 @export var save_png: bool = false
 @export_category("Clear")
@@ -36,17 +43,62 @@ class_name ImageSplitter
 @export var clear_all: bool = false
 
 func _clear_all() -> void:
+	var output = $Output
 	colors = []
 	masks = []
 	backgrounds = []
 	mask_offsets = []
 	crest_locations =[]
-	for node in $Output.get_children():
+	for node in output.get_children():
+		node.queue_free()
+	for node in output.get_children():
 		node.queue_free()
 		
 func _save_pngs() -> void:
-	var png: Image = backgrounds[1]
-	png.save_png( "res://assets/map_sprites/dotc/split/" )
+	
+	## TODO:
+	## Fetch names from Output Nodes
+	
+	print("_save_pngs")
+	
+	var output = $Output
+	
+	if output.get_child_count() == 0:
+		printerr("Create and Name Your Nodes First")
+		return
+		
+	if output.get_child(0).name == "ColorID_0":
+		print("You should name the Nodes before saving")
+	
+	if not DirAccess.dir_exists_absolute(save_folder):
+		DirAccess.make_dir_absolute(save_folder)
+	
+	for i in output.get_child_count():
+		
+		var node = output.get_child(i)
+		
+		var save_path = save_folder + node.name + "/"
+		
+		if not DirAccess.dir_exists_absolute(save_path):
+			DirAccess.make_dir_absolute(save_path)
+		
+		print( "Saving png: " + node.name )
+		
+		if backgrounds.size() >= i:
+			var png: Image = backgrounds[i]
+			png.save_png( save_path + "background_" + str(i) + ".png" )
+		if masks.size() >= i:
+			var png: Image = masks[i]
+			png.save_png( save_path + "mask_" + str(i) + ".png" )
+	#for i in backgrounds.size():
+		#var png: Image = backgrounds[i]
+		#png.save_png( save_folder + "background_" + str(i) + ".png" )
+	#for i in masks.size():
+		#var png: Image = masks[i]
+		#png.save_png( save_folder + "mask_" + str(i) + ".png" )
+
+	
+
 
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
@@ -66,8 +118,10 @@ func _process(delta: float) -> void:
 			save_png = false
 		
 func _create_nodes() -> void:
-	var output: Node2D = $Output
 	
+	var output: Node2D = $Output
+	var inputs: Node2D = $Inputs
+
 	for i in colors.size():
 		var color = colors[i]
 		var mask = masks[i]
@@ -78,25 +132,39 @@ func _create_nodes() -> void:
 		color_node.name = "ColorID_" + str( i )
 		output.add_child( color_node )
 		color_node.owner = get_tree().edited_scene_root
+		color_node.set_meta("_edit_group_" + str(i), true)
 		
 		var mask_node = Sprite2D.new()
 		mask_node.name = "Mask"
+		mask_node.texture = ImageTexture.create_from_image( mask )
 		color_node.add_child( mask_node )
 		mask_node.owner = get_tree().edited_scene_root
+		mask_node.set_meta("_edit_group_" + str(i), true)
 		
 		var bg_node = Sprite2D.new()
 		bg_node.name = "BG"
+		bg_node.texture = ImageTexture.create_from_image( background )
 		color_node.add_child( bg_node )
 		bg_node.owner = get_tree().edited_scene_root
-		
-		mask.resource_local_to_scene = true
-		background.resource_local_to_scene = true
-		
-		mask_node.texture = ImageTexture.create_from_image( mask )
-		bg_node.texture = ImageTexture.create_from_image( background )
+		mask_node.set_meta("_edit_group_" + str(i), true)
 		
 		color_node.position = mask_offset
+	
+	inputs.visible = false
+	
+	var color_id = Sprite2D.new()
+	color_id.name = "ColorID"
+	color_id.texture = color_id_texture
+	inputs.add_child( color_id )
+	color_id.owner = get_tree().edited_scene_root
+	
+	var bg = Sprite2D.new()
+	bg.name = "Background"
+	bg.texture = background_texture
+	inputs.add_child( bg )
+	bg.owner = get_tree().edited_scene_root
 		
+
 
 func get_id_by_color( color: Color ) -> int:
 	for id in colors.size():
@@ -151,14 +219,11 @@ func crop_masks(  ) -> void:
 	for id in colors.size(): # one loop per color
 		var image = masks[id]
 		var bg = backgrounds[id]
-
-		var target_rect: Rect2 = Rect2() 
-		var source_rect: Rect2i = Rect2i()
 		
 		var left: int = image.get_width()
 		var top: int  = image.get_height()
-		var right: int
-		var bottom: int
+		var right: int = 0
+		var bottom: int = 0
 		
 		for x in range(image.get_width()):
 			for y in range(image.get_height()):
@@ -168,9 +233,6 @@ func crop_masks(  ) -> void:
 					right = max( right, x )
 					top = min( top, y )
 					bottom = max( bottom, y )
-					
-		source_rect = Rect2i( left, top, right - left, bottom - top )
-		target_rect = source_rect.grow( 1 )
 		
 		# I bet there's a way to do this simpler but this is what ChatGPT told me 
 		
@@ -180,24 +242,24 @@ func crop_masks(  ) -> void:
 		right = min(image.get_width() - 1, right + 1)
 		bottom = min(image.get_height() - 1, bottom + 1)
 
-		# limit the rect by the image extents
-		target_rect.position.x = max(0, left)
-		target_rect.position.y = max(0, top)
-		target_rect.size.x = min(image.get_width() - 1, right)
-		target_rect.size.y = min(image.get_height() - 1, bottom)
+		var width = right - left
+		var height = bottom - top
+		
+		var target_rect = Rect2( left, top, width, height )
+		print( "rect: ", target_rect )
 		
 		# MASK
-		var cropped = Image.create( target_rect.size.x, target_rect.size.y, false, Image.FORMAT_RGBA8 )
+		var cropped = Image.create( width, height, false, Image.FORMAT_RGBA8 )
 		cropped.blit_rect( image, target_rect, Vector2i(0,0) )
 		masks[id] = cropped
 		
 		# TODO: Need include mask +1 pixels
 		# BG
-		var cropped_bg = Image.create( target_rect.size.x, target_rect.size.y, false, Image.FORMAT_RGBA8 )
+		var cropped_bg = Image.create( width, height, false, Image.FORMAT_RGBA8 )
 		cropped_bg.blit_rect( backgrounds[id], target_rect, Vector2i(0,0) )
 		backgrounds[id] = cropped_bg
 		
-		mask_offsets.append( target_rect.get_center() )
+		mask_offsets.append( target_rect.get_center() - Vector2(image.get_width() * .5, image.get_height() * .5 ) )
 
 
 
