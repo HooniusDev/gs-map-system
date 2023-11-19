@@ -56,3 +56,4 @@ func on_input_event(viewport: Viewport, event: InputEvent, shape_idx: int) -> vo
 			hover_id = territory_id
 			MapEditorEvents.hover_territory_changed.emit(hover_id)
 			$"../Images/ColorID".set_sprite_to_territory( hover_id, $"../Images/HoverVisualizer" )
+

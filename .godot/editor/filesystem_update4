@@ -10,3 +10,5 @@ res://assets/shaders/outline.gdshader
 res://assets/shaders/outline_2.gdshader
 res://assets/shaders/selected_outline.gdshader
 res://scenes/editor/image_splitter.gd
+res://scenes/Maps/dotc_from_splitter.tscn
+res://scripts/editor_map_input.gd

@@ -96,6 +96,15 @@ func _save_pngs() -> void:
 			var png: Image = masks[i]
 			png.save_png( save_path + "mask_" + node.name + ".png" )
 
+## TODO: 
+
+## Re create Inputs and Outputs nodes so if they are saved they dont reference the saved ones
+
+## Duplicate color_id so crest locations stay on the Input texture
+## Add output versions of ColorID and Background
+## Output colors array
+
+
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		if split_images and is_instance_valid( color_id_texture ) and is_instance_valid( background_texture ):
