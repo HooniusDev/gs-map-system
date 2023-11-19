@@ -1,6 +1,8 @@
-Node2D
+Camera2D
+StaticBody2D
 CollisionShape2D
 Area2D
+Node2D
 Sprite2D
 ColorRect
 HBoxContainer
@@ -11,4 +13,3 @@ TextureRect
 PanelContainer
 ConfirmationDialog
 Control
-Node

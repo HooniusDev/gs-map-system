@@ -1,30 +1,35 @@
-extends Node2D
-class_name EditorMap
+extends StaticBody2D
+class_name Map
 
-@onready var territories: Node2D = $Territories
-@onready var images: Node2D = $Images
+@onready var colors: Array[Color]
+
+@onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
+@onready var color_id_texture: Sprite2D = $ColorID_Texture
+
 
 func _ready() -> void:
-	MapEditorEvents.color_id_texture_changed.connect(create_territories)
-	pass
+	for node in $ColorID_Texture.get_children():
+		colors.append( node.self_modulate )
+	var shape: RectangleShape2D = RectangleShape2D.new()
+	shape.size = color_id_texture.texture.get_size()
+	collision_shape_2d.shape = shape
 
-func create_territories() -> void:
-	print("Create_territories ")
-	
-	for t in territories.get_children():
-		territories.remove_child(t)
-		t.queue_free()
-		
-	## if id dont exist createa new TerritoryData 
-	for i in Globals.Manager.color_id.colors.size():
-		var territory = Territory.new()
-		territories.add_child(territory)
-		var data = TerritoryData.new()
-		data.colorID = Globals.Manager.color_id.colors[i]
-		data.ID = i
-		data.name = "territory_" + str(i)
-		territory.setup(i, data)
 
-	print("territory count: ", territories.get_child_count())
+func get_id_by_color( color: Color ) -> int:
+	for id in colors.size():
+		if colors[id].is_equal_approx(color):
+			return id
+	return -1
+
+func get_id_by_position( pos: Vector2 ) -> int:
+	var local: Vector2 = pos + collision_shape_2d.shape.get_size() / 2.0
+	var color = color_id_texture.texture.get_image().get_pixelv( local )
+	return get_id_by_color( color )
+
+func _input_event(viewport: Viewport, event: InputEvent, shape_idx: int) -> void:
 	
-	MapEditorEvents.territory_list_changed.emit()
+	print("Mouse over: " , get_id_by_position( get_local_mouse_position() ) )
+
+#func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+	#print("Mouse over: " , get_id_by_position( event.position ))
+	#pass # Replace with function body.

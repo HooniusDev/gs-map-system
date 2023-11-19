@@ -29,6 +29,8 @@ class_name ImageSplitter
 ## Offsets of cropped images to match original background
 @export var mask_offsets: Array[Vector2] = []
 
+var color_id_no_crests: Image
+
 ## Experimental marking of locations
 @export var crest_locations: Array[Vector2] = []
 
@@ -58,6 +60,7 @@ func _clear_all() -> void:
 		node.queue_free()
 	for node in inputs.get_children():
 		node.queue_free()
+	output.queue_free()
 		
 func _save_pngs() -> void:
 	
@@ -108,6 +111,11 @@ func _save_pngs() -> void:
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		if split_images and is_instance_valid( color_id_texture ) and is_instance_valid( background_texture ):
+			
+			var image = color_id_texture.get_image()
+			color_id_no_crests = image.duplicate()
+			color_id_no_crests.resource_local_to_scene = true
+			
 			process_colors()
 			read_crest_locations()
 			create_masks()
@@ -124,20 +132,42 @@ func _process(delta: float) -> void:
 		
 func _create_nodes() -> void:
 	
-	var output: Node2D = $Output
 	var inputs: Node2D = $Inputs
+	
+	var output: Node2D = Node2D.new()
+	output.name = "Output"
+	output.texture = background_texture
+	add_child( output )
+	output.owner = get_tree().edited_scene_root
+
+
+
+	var bg = Sprite2D.new()
+	bg.name = "Background"
+	bg.texture = background_texture
+	output.add_child( bg )
+	bg.owner = get_tree().edited_scene_root
+	
+	var color_id_output = Sprite2D.new()
+	color_id_output.name = "ColorID_Texture"
+	color_id_output.texture = ImageTexture.create_from_image( color_id_no_crests )
+	output.add_child( color_id_output )
+	color_id_output.owner = get_tree().edited_scene_root
+	
 
 	for i in colors.size():
+		
 		var color = colors[i]
 		var mask = masks[i]
 		var background = backgrounds[i]
 		var mask_offset = mask_offsets[i]
 		
 		var color_node = Node2D.new() # Node parent per color
-		color_node.name = "ColorID_" + str( i )
-		output.add_child( color_node )
+		color_node.name = "Id_" + str( i )
+		color_id_output.add_child( color_node )
 		color_node.owner = get_tree().edited_scene_root
 		color_node.position = mask_offset
+		color_node.self_modulate = color
 		
 		var mask_node = Sprite2D.new()
 		mask_node.name = "Mask"
@@ -166,11 +196,11 @@ func _create_nodes() -> void:
 	inputs.add_child( color_id )
 	color_id.owner = get_tree().edited_scene_root
 	
-	var bg = Sprite2D.new()
-	bg.name = "Background"
-	bg.texture = background_texture
-	inputs.add_child( bg )
-	bg.owner = get_tree().edited_scene_root
+	var bg_input = Sprite2D.new()
+	bg_input.name = "Background"
+	bg_input.texture = background_texture
+	inputs.add_child( bg_input )
+	bg_input.owner = get_tree().edited_scene_root
 		
 func get_id_by_color( color: Color ) -> int:
 	if color.a < 0.01:
@@ -220,14 +250,15 @@ func create_masks( ) -> void:
 			if color.a < 0.01: # transparent -> discard pixel
 				continue
 			if color.is_equal_approx( "ff0000" ):
+				print("crest color: ", Vector2(x,y))
 				var color_id = source.get_pixel( x + 1, y )
 				id = get_id_by_color( color_id )
 				masks[id].set_pixel(x,y, Color.WHITE)
 				var pixel = bg_image.get_pixel( x, y )
 				backgrounds[id].set_pixel(x,y, pixel)
+				color_id_no_crests.set_pixel( x, y, color_id )
 				continue
 				
-			
 			# This is familiar color so add it to masks array
 			if id > -1:
 				masks[id].set_pixel(x,y, Color.WHITE)
@@ -325,11 +356,12 @@ func read_crest_locations() -> void:
 			var color = source.get_pixel(x,y)
 			if color.is_equal_approx( "ff0000" ): # red -> crest location
 				# pixel on right determines which color this crest belongs
-				color = source.get_pixel( x+1, y )
+				print( "read_crest_locations " , Vector2(x,y) )
+				color = source.get_pixel( x + 1, y )
 				var id = get_id_by_color( color )
 				crest_locations[id] = Vector2(x,y)
-				var right = source.get_pixel( x + 1, y )
 				masks[id].set_pixel(x,y, Color.WHITE)
+				#color_id_no_crests.set_pixel( x, y, Color.YELLOW )
 
 func _get_configuration_warnings():
 	var warnings = []
