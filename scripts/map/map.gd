@@ -6,6 +6,9 @@ class_name Map
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 @onready var color_id_texture: Sprite2D = $ColorID_Texture
 
+const HOVER_SHADER = preload("res://assets/shaders/hover_shader.tres")
+
+var hover_territory_id: int = -1
 
 func _ready() -> void:
 	for node in $ColorID_Texture.get_children():
@@ -23,13 +26,30 @@ func get_id_by_color( color: Color ) -> int:
 
 func get_id_by_position( pos: Vector2 ) -> int:
 	var local: Vector2 = pos + collision_shape_2d.shape.get_size() / 2.0
-	var color = color_id_texture.texture.get_image().get_pixelv( local )
-	return get_id_by_color( color )
+	if local.x >= 0 and local.y >= 0 and local.x < color_id_texture.texture.get_width() and local.y < color_id_texture.texture.get_height():
+		var color = color_id_texture.texture.get_image().get_pixelv( local )
+		return get_id_by_color( color )
+	
+	return -1
 
 func _input_event(viewport: Viewport, event: InputEvent, shape_idx: int) -> void:
 	
-	print("Mouse over: " , get_id_by_position( get_local_mouse_position() ) )
+	var id = get_id_by_position( get_local_mouse_position() )
+	if (id == -1):
+		return
+	
+	if event is InputEventMouseMotion:
 
-#func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-	#print("Mouse over: " , get_id_by_position( event.position ))
-	#pass # Replace with function body.
+		if id != hover_territory_id:
+			var new_mask: Sprite2D = color_id_texture.get_child(id).get_node("Mask")
+			print( id , ": ", new_mask.name )
+			new_mask.material = HOVER_SHADER
+			new_mask.z_index = 1
+			var old_mask: Sprite2D = color_id_texture.get_child(hover_territory_id).get_node("Mask") as Sprite2D
+			old_mask.material = null
+			old_mask.z_index = 0
+		hover_territory_id = id
+		
+	
+
+

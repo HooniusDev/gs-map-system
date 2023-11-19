@@ -1,1 +1,3 @@
+CanvasItemMaterial
+ShaderMaterial
 Shader

@@ -1,4 +1,5 @@
 res://scenes/Maps
+res://assets/shaders
 res://scripts/map
 res://scenes/experimental
 res://scripts/autoloads

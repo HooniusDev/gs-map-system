@@ -9,6 +9,9 @@ res://addons/generic_pixel_ui/stylebox/panels/panel_container_focus_square.tres
 res://assets/shaders/outline.gdshader
 res://assets/shaders/outline_2.gdshader
 res://assets/shaders/selected_outline.gdshader
-res://scenes/editor/map_editor_scene.tscn
 res://scripts/map/map.gd
+res://assets/shaders/hover_material.tres
+res://assets/shaders/hover_shader.tres
 res://scenes/experimental/split_images.tscn
+res://scenes/Maps/dotc_next_step.tscn
+res://assets/shaders/hover_canvas_material.tres
