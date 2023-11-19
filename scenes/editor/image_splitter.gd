@@ -189,6 +189,7 @@ func process_colors() -> void:
 	for i in colors.size():
 		masks.append( Image.create( source.get_size().x, source.get_size().y, false, Image.FORMAT_RGBA8 ) )
 		backgrounds.append( Image.create( source.get_size().x, source.get_size().y, false, Image.FORMAT_RGBA8 ) )
+		crest_locations.append(Vector2.ZERO)
 
 ## Creates masks per color, size of the color_id texture 
 func create_masks( ) -> void:
@@ -205,14 +206,19 @@ func create_masks( ) -> void:
 	for y in source.get_height():
 		for x in source.get_width():
 			var color = source.get_pixel( x, y )
+			var id = get_id_by_color( color )
+			
 			if color.a < 0.01: # transparent -> discard pixel
 				continue
-			var id = get_id_by_color( color )
 			if color.is_equal_approx( "ff0000" ):
+				var color_id = source.get_pixel( x + 1, y )
+				id = get_id_by_color( color_id )
 				masks[id].set_pixel(x,y, Color.WHITE)
-				print("adding mask white to crest masks size: ", masks.size())
+				var pixel = bg_image.get_pixel( x, y )
+				backgrounds[id].set_pixel(x,y, pixel)
 				continue
 				
+			
 			# This is familiar color so add it to masks array
 			if id > -1:
 				masks[id].set_pixel(x,y, Color.WHITE)
@@ -304,9 +310,7 @@ func crop_masks(  ) -> void:
 func read_crest_locations() -> void:
 	
 	var source = color_id_texture.get_image()
-	
-	crest_locations.resize( colors.size() )
-	
+
 	for y in source.get_height():
 		for x in source.get_width():
 			var color = source.get_pixel(x,y)
@@ -316,7 +320,6 @@ func read_crest_locations() -> void:
 				var id = get_id_by_color( color )
 				crest_locations[id] = Vector2(x,y)
 				var right = source.get_pixel( x + 1, y )
-				source.set_pixel(x,y, right) #
 				masks[id].set_pixel(x,y, Color.WHITE)
 
 func _get_configuration_warnings():
