@@ -46,7 +46,6 @@ class_name ImageSplitter
 ## Clear Nodes from Output and Empty Arrays
 @export var clear_all: bool = false
 
-
 func _clear_all() -> void:
 	var output = $Output
 	var inputs = $Inputs
@@ -97,10 +96,11 @@ func _save_pngs() -> void:
 			var png: Image = masks[i]
 			png.save_png( save_path + "mask_" + node.name + ".png" )
 
-
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		if split_images and is_instance_valid( color_id_texture ) and is_instance_valid( background_texture ):
+			process_colors()
+			read_crest_locations()
 			create_masks()
 			crop_masks()
 			split_images = false
@@ -128,23 +128,26 @@ func _create_nodes() -> void:
 		color_node.name = "ColorID_" + str( i )
 		output.add_child( color_node )
 		color_node.owner = get_tree().edited_scene_root
-		color_node.set_meta("_edit_group_" + str(i), true)
+		color_node.position = mask_offset
 		
 		var mask_node = Sprite2D.new()
 		mask_node.name = "Mask"
 		mask_node.texture = ImageTexture.create_from_image( mask )
 		color_node.add_child( mask_node )
 		mask_node.owner = get_tree().edited_scene_root
-		mask_node.set_meta("_edit_group_" + str(i), true)
 		
 		var bg_node = Sprite2D.new()
 		bg_node.name = "BG"
 		bg_node.texture = ImageTexture.create_from_image( background )
 		color_node.add_child( bg_node )
 		bg_node.owner = get_tree().edited_scene_root
-		mask_node.set_meta("_edit_group_" + str(i), true)
 		
-		color_node.position = mask_offset
+		var crest_marker = Marker2D.new() # Node parent per color
+		crest_marker.name = "Crest"
+		color_node.add_child( crest_marker )
+		crest_marker.owner = get_tree().edited_scene_root
+		crest_marker.global_position = crest_locations[i] - Vector2(color_id_texture.get_width() * .5, color_id_texture.get_height() * .5 )
+		
 	
 	inputs.visible = false
 	
@@ -160,20 +163,36 @@ func _create_nodes() -> void:
 	inputs.add_child( bg )
 	bg.owner = get_tree().edited_scene_root
 		
-
 func get_id_by_color( color: Color ) -> int:
-	if color.is_equal_approx(Color.TRANSPARENT):
+	if color.a < 0.01:
 		return -1
 	for id in colors.size():
 		if colors[id].is_equal_approx(color):
 			return id
 	return -1
 
+func process_colors() -> void:
+	
+	var source = color_id_texture.get_image()
+	
+	for y in source.get_height():
+		for x in source.get_width():
+			var color = source.get_pixel( x, y )
+			if color.a < 0.01:
+				continue
+			if color.is_equal_approx( "ff0000" ):
+				continue
+			var id = get_id_by_color( color )
+			if id < 0:
+				colors.append(color)
+				
+	for i in colors.size():
+		masks.append( Image.create( source.get_size().x, source.get_size().y, false, Image.FORMAT_RGBA8 ) )
+		backgrounds.append( Image.create( source.get_size().x, source.get_size().y, false, Image.FORMAT_RGBA8 ) )
+
 ## Creates masks per color, size of the color_id texture 
 func create_masks( ) -> void:
 	
-	masks = []
-	colors = []
 	mask_offsets = []
 	
 	# load the ColorID image
@@ -188,11 +207,12 @@ func create_masks( ) -> void:
 			var color = source.get_pixel( x, y )
 			if color.a < 0.01: # transparent -> discard pixel
 				continue
-			if color.is_equal_approx( "ff0000" ): # red -> crest location
-				# pixel on right determines which color this crest belongs
-				color = source.get_pixel( x+1, y )
-				crest_locations.append( Vector2(x,y) )
 			var id = get_id_by_color( color )
+			if color.is_equal_approx( "ff0000" ):
+				masks[id].set_pixel(x,y, Color.WHITE)
+				print("adding mask white to crest masks size: ", masks.size())
+				continue
+				
 			# This is familiar color so add it to masks array
 			if id > -1:
 				masks[id].set_pixel(x,y, Color.WHITE)
@@ -200,11 +220,7 @@ func create_masks( ) -> void:
 				backgrounds[id].set_pixel(x,y, bg_pixel)
 			# Color is a new one
 			else:
-				var mask = Image.create( source.get_size().x, source.get_size().y, false, Image.FORMAT_RGBA8 )
-				var bg = Image.create( source.get_size().x, source.get_size().y, false, Image.FORMAT_RGBA8 )
-				masks.append( mask )
-				backgrounds.append( bg )
-				mask.set_pixel(x,y, Color.WHITE)
+				masks[id].set_pixel(x,y, Color.WHITE)
 				var bg_pixel = background_texture.get_image().get_pixel( x, y )
 				backgrounds[id].set_pixel(x,y, bg_pixel)
 				colors.append(color)
@@ -213,26 +229,27 @@ func create_masks( ) -> void:
 	for y in source.get_height():
 		for x in source.get_width():
 			var color = source.get_pixel( x, y )
-			if color.is_equal_approx(Color.TRANSPARENT):
-				return
+			if color.a > 0.1:
+				continue
 			if x > 0: # left
 				var id = get_id_by_color( source.get_pixel( x - 1, y ) )
 				if id != -1: # There is a color
-					backgrounds[id].set_pixel(x,y, bg_image.get_pixel( x - 1, y))
+					backgrounds[id].set_pixel(x,y, bg_image.get_pixel( x, y))
+					#backgrounds[id].set_pixel(x - 1,y, Color.BLUE_VIOLET)
 			if x < source.get_width() - 1: #right
 				var id = get_id_by_color( source.get_pixel( x + 1, y ) )
 				if id != -1: # There is a color
-					backgrounds[id].set_pixel(x,y, bg_image.get_pixel( x + 1, y))
+					backgrounds[id].set_pixel(x,y, bg_image.get_pixel( x, y))
 			if y > 0: # up
 				var id = get_id_by_color( source.get_pixel( x, y - 1 ) )
 				if id != -1: # There is a color
-					backgrounds[id].set_pixel(x,y, bg_image.get_pixel( x, y - 1))
+					backgrounds[id].set_pixel(x,y, bg_image.get_pixel( x, y))
 			if y < source.get_height() - 1: # down
 				var id = get_id_by_color( source.get_pixel( x, y + 1 ) )
 				if id != -1: # There is a color
-					backgrounds[id].set_pixel(x,y, bg_image.get_pixel( x, y + 1))
-
+					backgrounds[id].set_pixel(x,y, bg_image.get_pixel( x, y))
 				
+
 ## Crops masks to white pixels + 1 radius
 func crop_masks(  ) -> void:
 	## TODO: 
@@ -241,13 +258,13 @@ func crop_masks(  ) -> void:
 	## Multiple Layers? Someday amybe
 	
 	for id in colors.size(): # one loop per color
-		var image = masks[id]
-		var bg = backgrounds[id]
 		
-		var left: int = image.get_width()
-		var top: int  = image.get_height()
-		var right: int = 0
-		var bottom: int = 0
+		var image = masks[id]
+		
+		var left: float = image.get_width()
+		var top: float  = image.get_height()
+		var right: float = 0
+		var bottom: float = 0
 		
 		for x in range(image.get_width()):
 			for y in range(image.get_height()):
@@ -261,11 +278,11 @@ func crop_masks(  ) -> void:
 		# expand the rect by 1 pixel to all directions
 		left = max(0, left - 1) # Clamp at 0
 		top = max(0, top - 1) # Clamp at 0
-		right = min(image.get_width() - 1, right + 1)
-		bottom = min(image.get_height() - 1, bottom + 1)
+		right = min(image.get_width() - 1, right + 2)
+		bottom = min(image.get_height() - 1, bottom + 2)
 
-		var width = right - left
-		var height = bottom - top
+		var width: float = right - left
+		var height: float = bottom - top
 		
 		var target_rect = Rect2( left, top, width, height )
 		
@@ -274,13 +291,33 @@ func crop_masks(  ) -> void:
 		cropped.blit_rect( image, target_rect, Vector2i(0,0) )
 		masks[id] = cropped
 		
-		# TODO: Need include mask +1 pixels
 		# BG
 		var cropped_bg = Image.create( width, height, false, Image.FORMAT_RGBA8 )
 		cropped_bg.blit_rect( backgrounds[id], target_rect, Vector2i(0,0) )
 		backgrounds[id] = cropped_bg
 		
-		mask_offsets.append( target_rect.get_center() - Vector2(image.get_width() * .5, image.get_height() * .5 ) )
+		var center = target_rect.get_center() - Vector2(image.get_width() * .5, image.get_height() * .5 )
+		
+		mask_offsets.append( center )
+		
+
+func read_crest_locations() -> void:
+	
+	var source = color_id_texture.get_image()
+	
+	crest_locations.resize( colors.size() )
+	
+	for y in source.get_height():
+		for x in source.get_width():
+			var color = source.get_pixel(x,y)
+			if color.is_equal_approx( "ff0000" ): # red -> crest location
+				# pixel on right determines which color this crest belongs
+				color = source.get_pixel( x+1, y )
+				var id = get_id_by_color( color )
+				crest_locations[id] = Vector2(x,y)
+				var right = source.get_pixel( x + 1, y )
+				source.set_pixel(x,y, right) #
+				masks[id].set_pixel(x,y, Color.WHITE)
 
 func _get_configuration_warnings():
 	var warnings = []
