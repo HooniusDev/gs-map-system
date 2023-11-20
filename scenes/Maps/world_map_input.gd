@@ -21,7 +21,7 @@ func _input_event(viewport: Viewport, event: InputEvent, shape_idx: int) -> void
 	
 	if event is InputEventMouseMotion:
 		if new_hover_id != hover_territory_id:
-			GameEvents.hover_territory_changed.emit( hover_territory_id, new_hover_id )
+			GameEvents.hover_territory_changed.emit( new_hover_id )
 			hover_territory_id = new_hover_id
 		
 	if event is InputEventMouseButton and event.is_released():

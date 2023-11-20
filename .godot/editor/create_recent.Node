@@ -1,9 +1,9 @@
+Node2D
 Label
 ColorRect
 CollisionShape2D
 Sprite2D
 Area2D
-Node2D
 TextureRect
 VBoxContainer
 PanelContainer

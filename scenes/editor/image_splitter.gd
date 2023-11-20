@@ -109,6 +109,7 @@ func _save_pngs() -> void:
 
 
 func _process(delta: float) -> void:
+	
 	if Engine.is_editor_hint():
 		if split_images and is_instance_valid( color_id_texture ) and is_instance_valid( background_texture ):
 			
@@ -129,6 +130,18 @@ func _process(delta: float) -> void:
 		if save_png:
 			_save_pngs()
 			save_png = false
+	else:
+		var image = color_id_texture.get_image()
+		color_id_no_crests = image.duplicate()
+		color_id_no_crests.resource_local_to_scene = true
+		
+		process_colors()
+		read_crest_locations()
+		create_masks()
+		crop_masks()
+		split_images = false
+		if create_nodes:
+			_create_nodes()
 		
 func _create_nodes() -> void:
 	
@@ -136,11 +149,8 @@ func _create_nodes() -> void:
 	
 	var output: Node2D = Node2D.new()
 	output.name = "Output"
-	output.texture = background_texture
 	add_child( output )
 	output.owner = get_tree().edited_scene_root
-
-
 
 	var bg = Sprite2D.new()
 	bg.name = "Background"
@@ -213,6 +223,9 @@ func get_id_by_color( color: Color ) -> int:
 func process_colors() -> void:
 	
 	var source = color_id_texture.get_image()
+	if source.get_height() < 2:
+		printerr("NO INPUT")
+		return
 	
 	for y in source.get_height():
 		for x in source.get_width():
@@ -239,7 +252,7 @@ func create_masks( ) -> void:
 	var source = color_id_texture.get_image()
 	var bg_image = background_texture.get_image()
 	
-	if not is_instance_valid(source):
+	if not is_instance_valid(source) or not is_instance_valid(bg_image):
 		printerr("Texture is shit!")
 		
 	for y in source.get_height():
