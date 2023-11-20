@@ -3,6 +3,7 @@
 [ext_resource type="Shader" path="res://assets/shaders/outline_2.gdshader" id="1_mmq8l"]
 
 [resource]
+resource_local_to_scene = true
 shader = ExtResource("1_mmq8l")
-shader_parameter/outline_color = Color(0.2, 0.2, 0.2, 0.388235)
-shader_parameter/fill_color = Color(0.921569, 0.921569, 0.921569, 0.313726)
+shader_parameter/outline_color = Color(0.301961, 0.301961, 0.301961, 0.776471)
+shader_parameter/fill_color = Color(0.882353, 0.980392, 0.886275, 0.172549)

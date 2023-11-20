@@ -1,4 +1,6 @@
-res://scenes/Maps/dotc_from_splitter.tscn
+res://scenes/Maps/dotc_next_step_2.tscn
+res://assets/shaders/outline_2.gdshader
+res://assets/shaders/hover_shader.tres
 res://addons/generic_pixel_ui/stylebox/panels/panel_square_dark.stylebox
 res://addons/generic_pixel_ui/stylebox/tab/dark/tab_disabled_dark.stylebox
 res://addons/generic_pixel_ui/stylebox/tab/dark/tab_hovered_dark.stylebox
@@ -7,11 +9,15 @@ res://addons/generic_pixel_ui/stylebox/tab/dark/tab_unselected_dark.stylebox
 res://addons/generic_pixel_ui/generic_pixel_ui.theme
 res://addons/generic_pixel_ui/stylebox/panels/panel_container_focus_square.tres
 res://assets/shaders/outline.gdshader
-res://assets/shaders/outline_2.gdshader
 res://assets/shaders/selected_outline.gdshader
 res://scripts/map/map.gd
-res://assets/shaders/hover_material.tres
-res://assets/shaders/hover_shader.tres
+res://scenes/Maps/world_map_input.gd
 res://scenes/experimental/split_images.tscn
+res://scripts/autoloads/game_events.gd
+res://scripts/editor/selected_territory_info.gd
+res://scripts/army.gd
+res://scripts/map/territory.gd
+res://assets/shaders/allow_move.tres
+res://assets/shaders/selected_shader.tres
 res://scenes/Maps/dotc_next_step.tscn
-res://assets/shaders/hover_canvas_material.tres
+res://assets/shaders/allow_move_shader.tres
